@@ -2,8 +2,8 @@ version: '3'
 
 services:
   db:
-    image: dr.esuni.jp/esuni/PROJECT_NAME/db-local
-    container_name: esuni-PROJECT_NAME-db-local
+    #image: dr.esuni.jp/esuni/PROJECT_NAME/db-local
+    container_name: PROJECT_NAME-db-local
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -11,8 +11,8 @@ services:
       - "3012:5432"
 
   web:
-    image: dr.esuni.jp/esuni/PROJECT_NAME/web-local
-    container_name: esuni-PROJECT_NAME-web-local
+    #image: dr.esuni.jp/esuni/PROJECT_NAME/web-local
+    container_name: PROJECT_NAME-web-local
     hostname: docker
     volumes:
       - "./src:/data/www/app/src"
