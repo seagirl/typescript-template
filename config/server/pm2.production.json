@@ -1,0 +1,9 @@
+{
+  "name": "PROJECT_NAME",
+  "script": "dist/web/express/index.js",
+  "instances": "max",
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": 3000
+  }
+}

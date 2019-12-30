@@ -1,0 +1,9 @@
+{
+  "watch": ["src"],
+  "ext": "ts",
+  "exec": "ts-node ./src/web/express/index.ts",
+  "env": {
+    "NODE_ENV": "docker",
+    "PORT": 3000
+  }
+}

@@ -1,0 +1,27 @@
+Response:
+  description:
+    レスポンス
+  type: string
+  enum: ['ok', 'error']
+
+# --------------------------------------------------
+Error:
+  description:
+    エラー
+  type: object
+  properties:
+    response:
+      $ref: 'index.yaml#/components/schemas/Response'
+
+# --------------------------------------------------
+Member:
+  description:
+    メンバー
+  type: object
+  required:
+    - name
+  properties:
+    name:
+      type: string
+      example: yoshizu
+      description: name

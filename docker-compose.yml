@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: dr.esuni.jp/esuni/PROJECT_NAME/db-local
+    container_name: esuni-PROJECT_NAME-db-local
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "3012:5432"
+
+  web:
+    image: dr.esuni.jp/esuni/PROJECT_NAME/web-local
+    container_name: esuni-PROJECT_NAME-web-local
+    hostname: docker
+    volumes:
+      - "./src:/data/www/app/src"
+      - "./config:/data/www/app/config"
+      - "./docker:/data/www/app/docker"
+      - "./doc:/data/www/app/doc"
+    links:
+      - db:db
+    ports:
+      - "3011:3000"
