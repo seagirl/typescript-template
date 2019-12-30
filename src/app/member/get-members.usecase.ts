@@ -5,7 +5,6 @@ import { MemberRepository } from './member.repository'
 export interface GetMembersUseCaseInput {
   limit?: number;
   offset?: number;
-  state?: number;
 }
 
 export interface GetMembersUseCaseOutput {

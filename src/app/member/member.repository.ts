@@ -2,7 +2,6 @@ import { IdentifierGenerator } from '../../core'
 import { Member } from '../../domain/entity'
 
 export interface SearchInput {
-  state?: number;
   limit?: number;
   offset?: number;
 }

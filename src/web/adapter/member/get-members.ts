@@ -10,12 +10,10 @@ export class GetMembersController implements Controller {
   handle (input: Request): Promise<GetMembersUseCaseOutput> {
     const limit = input.query.limit || 10000
     const offset = input.query.offset || 0
-    const state = input.query.state
 
     return this.interactor.execute({
       limit: limit,
       offset: offset,
-      state: state
     })
   }
 }

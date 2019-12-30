@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express'
-import { GetMembersBuilder, GetMemberBuilder, PostMembersBuilder, PostMemberStateBuilder, PostMemberColorBuilder, DeleteMemberBuilder } from '../../builder/member.builder'
+import { GetMembersBuilder, GetMemberBuilder, PostMembersBuilder, DeleteMemberBuilder } from '../../builder/member.builder'
 import { handle } from '../util'
 
 const router = Router()
