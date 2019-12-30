@@ -53,16 +53,16 @@ $ yarn pm2 logs {APP_NAME}
 $ yarn pm2 delete {APP_NAME}
 ```
 
-## Docker
+<!-- ## Docker
 
-<!-- ```
+```
 % docker login dr.esuni.jp # ID/PW は GitLab のアカウント
 % docker-compose up
-``` -->
+```
 
 ### Docker イメージのビルド
 
-<!-- ```
+```
 # DB サーバー
 docker build -t dr.esuni.jp/esuni/PROJECT_NAME/db -f docker/db/Dockerfile .
 docker push dr.esuni.jp/esuni/PROJECT_NAME/db
