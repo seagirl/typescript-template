@@ -1,5 +1,5 @@
 {
-  "name": "PROJECT_NAME",
+  "name": "APP_NAME",
   "script": "dist/web/express/index.js",
   "env": {
     "NODE_ENV": "development",

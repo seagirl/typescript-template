@@ -4,7 +4,7 @@
   "port": 5432,
   "username": "www",
   "password": "",
-  "database": "PROJECT_NAME",
+  "database": "APP_NAME",
   "synchronize": false,
   "logging": false,
   "entities": ["src/db/entity/**/*.ts"],

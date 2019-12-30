@@ -1,6 +1,6 @@
-# PROJECT_NAME
+# APP_NAME
 
-> PROJECT_NAME JSON API
+> APP_NAME JSON API
 
 ## Build Setup
 
@@ -9,7 +9,7 @@
 $ yarn install
 
 # createdb
-$ createdb -U www PROJECT_NAME
+$ createdb -U www APP_NAME
 
 # migration
 $ yarn migration:run -f config/orm/local.json
@@ -64,10 +64,10 @@ $ yarn pm2 delete {APP_NAME}
 
 ```
 # DB サーバー
-docker build -t dr.esuni.jp/esuni/PROJECT_NAME/db -f docker/db/Dockerfile .
-docker push dr.esuni.jp/esuni/PROJECT_NAME/db
+docker build -t dr.esuni.jp/esuni/APP_NAME/db -f docker/db/Dockerfile .
+docker push dr.esuni.jp/esuni/APP_NAME/db
 
 # WEB サーバー
-docker build -t dr.esuni.jp/esuni/PROJECT_NAME/web -f docker/web/Dockerfile .
-docker push dr.esuni.jp/esuni/PROJECT_NAME/web
+docker build -t dr.esuni.jp/esuni/APP_NAME/web -f docker/web/Dockerfile .
+docker push dr.esuni.jp/esuni/APP_NAME/web
 ``` -->
