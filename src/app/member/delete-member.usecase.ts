@@ -1,4 +1,4 @@
-import { ClientError, Usecase, Transaction } from '../../core'
+import { ClientError, Transaction, Usecase } from '../../core'
 import { MemberRepository } from './member.repository'
 
 export interface DeleteMemberUseCaseInput {

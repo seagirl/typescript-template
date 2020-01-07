@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { Builder } from '../../core'
 
 export const handle = async (builder: Builder<object>, req: Request, res: Response, next: NextFunction): Promise<void> => {

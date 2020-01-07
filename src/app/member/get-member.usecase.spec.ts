@@ -1,7 +1,7 @@
 import { ClientError } from '../../core'
 import { MemberFactory } from '../../domain/factory/member.factory'
-import { MockMemberRepository } from './member.repository'
 import { GetMemberInteractor } from './get-member.usecase'
+import { MockMemberRepository } from './member.repository'
 
 const testMember = MemberFactory.createMock()
 

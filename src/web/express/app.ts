@@ -1,9 +1,8 @@
+import express, { Express, NextFunction, Request, Response } from 'express'
 import { Server } from 'http'
-import express from 'express'
-import { Express, Request, Response, NextFunction } from 'express'
 import { DB } from '../../db'
-import { APIValidator } from './validator'
 import routes from './api'
+import { APIValidator } from './validator'
 
 export default class Application {
   public readonly express: Express = express()

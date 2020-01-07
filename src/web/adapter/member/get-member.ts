@@ -1,5 +1,5 @@
-import { Request, Controller, Presenter, Usecase } from '../../../core'
 import { GetMemberUseCaseOutput } from '../../../app/member/get-member.usecase'
+import { Controller, Presenter, Request, Usecase } from '../../../core'
 import { MemberViewModel } from '../../view-model'
 import { translate } from './translator'
 

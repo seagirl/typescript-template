@@ -1,6 +1,6 @@
-import { Request, Controller, Presenter, Usecase } from '../../../core'
-import { Member } from '../../../domain/entity'
 import { GetMembersUseCaseOutput } from '../../../app/member/get-members.usecase'
+import { Controller, Presenter, Request, Usecase } from '../../../core'
+import { Member } from '../../../domain/entity'
 import { MemberViewModel } from '../../view-model'
 import { translate } from './translator'
 

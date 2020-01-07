@@ -1,7 +1,7 @@
-import { getManager, EntityManager } from 'typeorm'
+import { EntityManager, getManager } from 'typeorm'
+import { MemberRepository as IMemberRepository, SearchInput } from '../../app/member/member.repository'
 import { Member as MemberEntity } from '../../domain/entity'
 import { MemberFactory } from '../../domain/factory/member.factory'
-import { MemberRepository as IMemberRepository, SearchInput } from '../../app/member/member.repository'
 import { Member } from '../entity'
 
 export class MemberRepository implements IMemberRepository {

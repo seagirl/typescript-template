@@ -1,5 +1,5 @@
-import { Request, Controller, Presenter, Usecase } from '../../../core'
 import { DeleteMemberUseCaseOutput } from '../../../app/member/delete-member.usecase'
+import { Controller, Presenter, Request, Usecase } from '../../../core'
 
 export class DeleteMemberController implements Controller {
   constructor (public interactor: Usecase) {}
