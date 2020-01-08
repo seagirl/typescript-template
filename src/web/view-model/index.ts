@@ -1,1 +1,1 @@
-export * from './member.view-model';
+export * from './member.view-model'

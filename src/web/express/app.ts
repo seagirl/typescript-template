@@ -17,7 +17,7 @@ export default class Application {
     ])
 
     this.express.use(express.json())
-    this.express.use(express.urlencoded({ extended: true }));
+    this.express.use(express.urlencoded({ extended: true }))
     this.express.use('/api', routes)
     this.express.use(this.errorHandler)
   }

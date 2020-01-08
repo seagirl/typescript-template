@@ -1,4 +1,4 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('member', { schema: 'public' })
 @Index('member_code_key', ['code'], { unique: true })
@@ -7,12 +7,12 @@ export class Member {
     type: 'integer',
     name: 'id'
   })
-  id!: number;
+  id!: number
 
   @Column('text', {
     nullable: false,
     unique: true,
     name: 'code'
   })
-  code!: string;
+  code!: string
 }
