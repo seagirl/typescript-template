@@ -5,13 +5,12 @@ import { PostMembersInteractor } from '../../app/member/post-members.usecase'
 import { Builder } from '../../core'
 import { MemberRepository } from '../../db/repository'
 import { Transaction } from '../../db/transaction'
-import { Member } from '../../domain/entity'
 import { DeleteMemberController, DeleteMemberPresenter } from '../adapter/member/delete-member'
 import { GetMemberController, GetMemberPresenter } from '../adapter/member/get-member'
 import { GetMembersController, GetMembersPresenter } from '../adapter/member/get-members'
 import { PostMembersController, PostMembersPresenter } from '../adapter/member/post-members'
 
-export class GetMembersBuilder extends Builder<Member> {
+export class GetMembersBuilder extends Builder {
   constructor () {
     super()
 
@@ -23,7 +22,7 @@ export class GetMembersBuilder extends Builder<Member> {
   }
 }
 
-export class GetMemberBuilder extends Builder<Member> {
+export class GetMemberBuilder extends Builder {
   constructor () {
     super()
 
@@ -35,7 +34,7 @@ export class GetMemberBuilder extends Builder<Member> {
   }
 }
 
-export class PostMembersBuilder extends Builder<Member> {
+export class PostMembersBuilder extends Builder {
   constructor () {
     super()
 
@@ -52,7 +51,7 @@ export class PostMembersBuilder extends Builder<Member> {
   }
 }
 
-export class DeleteMemberBuilder extends Builder<Member> {
+export class DeleteMemberBuilder extends Builder {
   constructor () {
     super()
 
