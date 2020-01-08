@@ -10,7 +10,7 @@ export default class Application {
   private validator = new APIValidator('./doc/api/index.yaml')
   private server!: Server
 
-  async init(): Promise<void> {
+  async init (): Promise<void> {
     await Promise.all([
       this.db.init(),
       this.validator.install(this.express)
@@ -22,7 +22,7 @@ export default class Application {
     this.express.use(this.errorHandler)
   }
 
-  start(): void {
+  start (): void {
     process.on('SIGTERM', this.shutdownHandler)
     process.on('SIGINT', this.shutdownHandler)
 
@@ -32,7 +32,7 @@ export default class Application {
     })
   }
 
-  async finish(): Promise<void> {
+  async finish (): Promise<void> {
     await this.db.close()
   }
 

@@ -15,9 +15,9 @@ export interface MemberRepository extends IdentifierGenerator {
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export class MockMemberRepository implements MemberRepository {
-  nextIdentifier(): Promise<number> { return Promise.resolve(0) }
-  search(input: SearchInput = {}): Promise<Member[]> { return Promise.resolve([]) }
-  find(code: string): Promise<Member | undefined> { return Promise.resolve(undefined) }
-  save(member: Member): Promise<void> { return Promise.resolve() }
-  delete(member: Member): Promise<void> { return Promise.resolve() }
+  nextIdentifier (): Promise<number> { return Promise.resolve(0) }
+  search (input: SearchInput = {}): Promise<Member[]> { return Promise.resolve([]) }
+  find (code: string): Promise<Member | undefined> { return Promise.resolve(undefined) }
+  save (member: Member): Promise<void> { return Promise.resolve() }
+  delete (member: Member): Promise<void> { return Promise.resolve() }
 }

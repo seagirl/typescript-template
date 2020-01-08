@@ -6,14 +6,14 @@ interface MemberFactoryInput {
 }
 
 export class MemberFactory {
-  static create(input: MemberFactoryInput): Member {
+  static create (input: MemberFactoryInput): Member {
     return new Member(
       input.id,
       input.code,
     )
   }
 
-  static createMock(): Member {
+  static createMock (): Member {
     return this.create({
       id: 1,
       code: 'test'

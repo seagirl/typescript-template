@@ -12,7 +12,7 @@ export class APIValidator {
     })
   }
 
-  async install(express: Application): Promise<void> {
+  async install (express: Application): Promise<void> {
     await this.validator.install(express)
   }
 }

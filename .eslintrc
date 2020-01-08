@@ -17,6 +17,9 @@
      */
     "indent": "off",
     "@typescript-eslint/indent": ["error", 2],
+    "quotes": "off",
+    "@typescript-eslint/quotes": ["error", "single"],
+    "@typescript-eslint/space-before-function-paren": ["error"],
     "@typescript-eslint/no-var-requires": "warn",
     "@typescript-eslint/class-name-casing": "warn"
   },

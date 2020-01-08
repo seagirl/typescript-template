@@ -7,10 +7,10 @@ import { Member } from '../entity'
 export class MemberRepository implements IMemberRepository {
   private manager: EntityManager = getManager()
 
-  async nextIdentifier(): Promise<number> {
+  async nextIdentifier (): Promise<number> {
     const row = await getManager().createQueryBuilder()
       .select([
-        "nextval('member_id_seq'::regclass)::int as id"
+        'nextval(\'member_id_seq\'::regclass)::int as id'
       ])
       .from('member', 'member')
       .limit(1)

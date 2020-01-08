@@ -3,7 +3,7 @@ import { Connection, createConnection } from 'typeorm'
 export class DB {
   private connection!: Connection
 
-  async init(): Promise<void> {
+  async init (): Promise<void> {
     if (this.connection != null) {
       return
     }
@@ -26,7 +26,7 @@ export class DB {
     }
   }
 
-  async close(): Promise<void> {
+  async close (): Promise<void> {
     if (this.connection == null) {
       return
     }
