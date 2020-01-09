@@ -21,9 +21,11 @@
     "@typescript-eslint/quotes": ["error", "single"],
     "semi": "off",
     "@typescript-eslint/semi": ["error", "never"],
+    "camelcase": "off",
+    "@typescript-eslint/camelcase": ["error", { "properties": "never", "allow": ["^[A-Za-z][a-zA-Za-z]+_[A-Za-z]+$"] }],
     "@typescript-eslint/space-before-function-paren": ["error"],
-    "@typescript-eslint/no-var-requires": "warn",
-    "@typescript-eslint/class-name-casing": "warn"
+    "@typescript-eslint/no-var-requires": "error",
+    "@typescript-eslint/class-name-casing": "error"
   },
   "env": {
     "jest": true
