@@ -13,11 +13,10 @@ export interface MemberRepository extends IdentifierGenerator {
   delete(member: Member): Promise<void>;
 }
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export class MockMemberRepository implements MemberRepository {
   nextIdentifier (): Promise<number> { return Promise.resolve(0) }
-  search (input: SearchInput = {}): Promise<Member[]> { return Promise.resolve([]) }
-  find (code: string): Promise<Member | undefined> { return Promise.resolve(undefined) }
-  save (member: Member): Promise<void> { return Promise.resolve() }
-  delete (member: Member): Promise<void> { return Promise.resolve() }
+  search (): Promise<Member[]> { return Promise.resolve([]) }
+  find (): Promise<Member | undefined> { return Promise.resolve(undefined) }
+  save (): Promise<void> { return Promise.resolve() }
+  delete (): Promise<void> { return Promise.resolve() }
 }
