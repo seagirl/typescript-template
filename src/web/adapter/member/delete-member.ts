@@ -1,4 +1,4 @@
-import { DeleteMemberUseCaseOutput } from '../../../app/member/delete-member.usecase'
+import { DeleteMemberUseCaseOutput } from '../../../app/usecase/member/delete-member.usecase'
 import { Controller, Presenter, Request, Usecase } from '../../../core'
 
 export class DeleteMemberController implements Controller {

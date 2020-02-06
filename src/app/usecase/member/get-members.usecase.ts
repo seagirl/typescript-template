@@ -1,6 +1,6 @@
-import { Usecase } from '../../core'
-import { Member } from '../../domain/entity'
-import { MemberRepository } from './member.repository'
+import { Usecase } from '../../../core'
+import { MemberEntity } from '../../../domain/entity'
+import { MemberRepository } from '../../repository/member.repository'
 
 export interface GetMembersUseCaseInput {
   limit?: number;
@@ -8,7 +8,7 @@ export interface GetMembersUseCaseInput {
 }
 
 export interface GetMembersUseCaseOutput {
-  data: Member[];
+  data: MemberEntity[];
 }
 
 export interface GetMembersUseCaseDependency {

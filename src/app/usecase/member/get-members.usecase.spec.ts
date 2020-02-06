@@ -1,6 +1,6 @@
-import { MemberFactory } from '../../domain/factory/member.factory'
+import { MemberFactory } from '../../../domain/factory/member.factory'
 import { GetMembersInteractor } from './get-members.usecase'
-import { MockMemberRepository } from './member.repository'
+import { MockMemberRepository } from '../../repository/member.repository'
 
 const testMember = MemberFactory.createMock()
 

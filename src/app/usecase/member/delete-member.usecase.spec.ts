@@ -1,35 +1,32 @@
-import { ClientError, MockTransaction } from '../../core'
-import { MemberFactory } from '../../domain/factory/member.factory'
-import { MockMemberRepository } from './member.repository'
-import { PostMembersInteractor } from './post-members.usecase'
+import { ClientError, MockTransaction } from '../../../core'
+import { MemberFactory } from '../../../domain/factory/member.factory'
+import { DeleteMemberInteractor } from './delete-member.usecase'
+import { MockMemberRepository } from '../../repository/member.repository'
 
 const testMember = MemberFactory.createMock()
 
 const transaction = new MockTransaction()
 const repository = new MockMemberRepository()
-const interactor = new PostMembersInteractor({
+const interactor = new DeleteMemberInteractor({
   transaction: transaction,
-  repository: repository,
-  identifierGenerator: repository,
+  repository: repository
 })
 
 let transactionBeginSpy: jest.SpyInstance
 let transactioCommitSpy: jest.SpyInstance
 let transactioRollbackSpy: jest.SpyInstance
 let transactionCloseSpy: jest.SpyInstance
-let repositoryNextIdentifierSpy: jest.SpyInstance
 let repositoryFindSpy: jest.SpyInstance
-let repositorySaveSpy: jest.SpyInstance
+let repositoryDeleteSpy: jest.SpyInstance
 
-describe('PostMembersInteractor', () => {
+describe('DeleteMemberInteractor', () => {
   beforeEach(() => {
     transactionBeginSpy = jest.spyOn(transaction, 'begin')
     transactioCommitSpy = jest.spyOn(transaction, 'commit')
     transactioRollbackSpy = jest.spyOn(transaction, 'rollback')
     transactionCloseSpy = jest.spyOn(transaction, 'close')
-    repositoryNextIdentifierSpy = jest.spyOn(repository, 'nextIdentifier')
     repositoryFindSpy = jest.spyOn(repository, 'find')
-    repositorySaveSpy = jest.spyOn(repository, 'save')
+    repositoryDeleteSpy = jest.spyOn(repository, 'delete')
   })
 
   afterEach(() => {
@@ -38,51 +35,45 @@ describe('PostMembersInteractor', () => {
   })
 
   it('execute', async () => {
-    repositoryNextIdentifierSpy.mockReturnValue(Promise.resolve(1))
-    repositoryFindSpy.mockReturnValue(undefined)
+    repositoryFindSpy.mockReturnValue(Promise.resolve(testMember))
 
     const result = await interactor.execute({ code: testMember.code })
-    expect(result).toEqual(testMember)
+    expect(result).toEqual({})
 
     expect(transactionBeginSpy).toHaveBeenCalledTimes(1)
     expect(transactioCommitSpy).toHaveBeenCalledTimes(1)
     expect(transactioRollbackSpy).toHaveBeenCalledTimes(0)
     expect(transactionCloseSpy).toHaveBeenCalledTimes(1)
-    expect(repositoryNextIdentifierSpy).toHaveBeenCalledTimes(1)
     expect(repositoryFindSpy).toHaveBeenCalledTimes(1)
-    expect(repositorySaveSpy).toHaveBeenCalledTimes(1)
+    expect(repositoryDeleteSpy).toHaveBeenCalledTimes(1)
   })
 
-  it('dupricate error', async () => {
-    repositoryNextIdentifierSpy.mockReturnValue(1)
-    repositoryFindSpy.mockReturnValue(Promise.resolve(testMember))
+  it('find error', async () => {
+    repositoryFindSpy.mockReturnValue(Promise.resolve(undefined))
 
     await expect(interactor.execute({ code: testMember.code })).rejects
-      .toThrowError(ClientError)
+      .toEqual(new ClientError('test is not found.'))
 
     expect(transactionBeginSpy).toHaveBeenCalledTimes(0)
     expect(transactioCommitSpy).toHaveBeenCalledTimes(0)
     expect(transactioRollbackSpy).toHaveBeenCalledTimes(0)
     expect(transactionCloseSpy).toHaveBeenCalledTimes(0)
-    expect(repositoryNextIdentifierSpy).toHaveBeenCalledTimes(0)
     expect(repositoryFindSpy).toHaveBeenCalledTimes(1)
-    expect(repositorySaveSpy).toHaveBeenCalledTimes(0)
+    expect(repositoryDeleteSpy).toHaveBeenCalledTimes(0)
   })
 
-  it('save error', async () => {
-    repositoryNextIdentifierSpy.mockReturnValue(Promise.resolve(1))
-    repositoryFindSpy.mockReturnValue(Promise.resolve(undefined))
-    repositorySaveSpy.mockRejectedValue(new Error('ERROR!!!'))
+  it('delete error', async () => {
+    repositoryFindSpy.mockReturnValue(Promise.resolve(testMember))
+    repositoryDeleteSpy.mockRejectedValue(new Error('ERROR!!!'))
 
     const result = await interactor.execute({ code: testMember.code })
-    expect(result).toEqual(testMember)
+    expect(result).toEqual({})
 
     expect(transactionBeginSpy).toHaveBeenCalledTimes(1)
     expect(transactioCommitSpy).toHaveBeenCalledTimes(0)
     expect(transactioRollbackSpy).toHaveBeenCalledTimes(1)
     expect(transactionCloseSpy).toHaveBeenCalledTimes(1)
-    expect(repositoryNextIdentifierSpy).toHaveBeenCalledTimes(1)
     expect(repositoryFindSpy).toHaveBeenCalledTimes(1)
-    expect(repositorySaveSpy).toHaveBeenCalledTimes(1)
+    expect(repositoryDeleteSpy).toHaveBeenCalledTimes(1)
   })
 })

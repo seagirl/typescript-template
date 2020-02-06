@@ -1,12 +1,12 @@
-import { ClientError, Usecase } from '../../core'
-import { Member } from '../../domain/entity'
-import { MemberRepository } from './member.repository'
+import { ClientError, Usecase } from '../../../core'
+import { MemberEntity } from '../../../domain/entity'
+import { MemberRepository } from '../../repository/member.repository'
 
 export interface GetMemberUseCaseInput {
   code: string;
 }
 
-export type GetMemberUseCaseOutput = Member
+export type GetMemberUseCaseOutput = MemberEntity
 
 export interface GetMemberUseCaseDependency {
   repository: MemberRepository;

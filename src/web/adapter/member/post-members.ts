@@ -1,7 +1,7 @@
-import { PostMembersUseCaseOutput } from '../../../app/member/post-members.usecase'
+import { PostMembersUseCaseOutput } from '../../../app/usecase/member/post-members.usecase'
 import { Controller, Presenter, Request, Usecase } from '../../../core'
 import { MemberViewModel } from '../../view-model'
-import { translate } from './translator'
+import { translate } from '../member.translator'
 
 export class PostMembersController implements Controller {
   constructor (public interactor: Usecase) {}

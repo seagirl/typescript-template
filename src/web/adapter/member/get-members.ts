@@ -1,8 +1,8 @@
-import { GetMembersUseCaseOutput } from '../../../app/member/get-members.usecase'
+import { GetMembersUseCaseOutput } from '../../../app/usecase/member/get-members.usecase'
 import { Controller, Presenter, Request, Usecase } from '../../../core'
-import { Member } from '../../../domain/entity'
+import { MemberEntity } from '../../../domain/entity'
 import { MemberViewModel } from '../../view-model'
-import { translate } from './translator'
+import { translate } from '../member.translator'
 
 export class GetMembersController implements Controller {
   constructor (public interactor: Usecase) {}
@@ -25,7 +25,7 @@ interface GetMembersPresenterOutput {
 
 export class GetMembersPresenter implements Presenter {
   present (input: GetMembersUseCaseOutput): GetMembersPresenterOutput {
-    const data = input.data.map((entity: Member) => {
+    const data = input.data.map((entity: MemberEntity) => {
       return translate(entity)
     })
     return {

@@ -1,13 +1,13 @@
-import { ClientError, IdentifierGenerator, ServerError, Transaction, Usecase } from '../../core'
-import { Member } from '../../domain/entity'
-import { MemberFactory } from '../../domain/factory/member.factory'
-import { MemberRepository } from './member.repository'
+import { ClientError, IdentifierGenerator, ServerError, Transaction, Usecase } from '../../../core'
+import { MemberEntity } from '../../../domain/entity'
+import { MemberFactory } from '../../../domain/factory/member.factory'
+import { MemberRepository } from '../../repository/member.repository'
 
 export interface PostMembersUseCaseInput {
   code: string;
 }
 
-export type PostMembersUseCaseOutput = Member
+export type PostMembersUseCaseOutput = MemberEntity
 
 export interface PostMembersUseCaseDependency {
   transaction: Transaction;

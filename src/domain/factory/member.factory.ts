@@ -1,4 +1,4 @@
-import { Member } from '../entity'
+import { MemberEntity } from '../entity'
 
 interface MemberFactoryInput {
   id: number;
@@ -6,14 +6,14 @@ interface MemberFactoryInput {
 }
 
 export class MemberFactory {
-  static create (input: MemberFactoryInput): Member {
-    return new Member(
+  static create (input: MemberFactoryInput): MemberEntity {
+    return new MemberEntity(
       input.id,
       input.code,
     )
   }
 
-  static createMock (): Member {
+  static createMock (): MemberEntity {
     return this.create({
       id: 1,
       code: 'test'

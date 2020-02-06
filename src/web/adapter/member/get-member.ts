@@ -1,7 +1,7 @@
-import { GetMemberUseCaseOutput } from '../../../app/member/get-member.usecase'
+import { GetMemberUseCaseOutput } from '../../../app/usecase/member/get-member.usecase'
 import { Controller, Presenter, Request, Usecase } from '../../../core'
 import { MemberViewModel } from '../../view-model'
-import { translate } from './translator'
+import { translate } from '../member.translator'
 
 export class GetMemberController implements Controller {
   constructor (public interactor: Usecase) {}

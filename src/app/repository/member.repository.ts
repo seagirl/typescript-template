@@ -1,5 +1,5 @@
 import { IdentifierGenerator } from '../../core'
-import { Member } from '../../domain/entity'
+import { MemberEntity } from '../../domain/entity'
 
 export interface SearchInput {
   limit?: number;
@@ -7,16 +7,16 @@ export interface SearchInput {
 }
 
 export interface MemberRepository extends IdentifierGenerator {
-  search(input?: SearchInput): Promise<Member[]>;
-  find(code: string): Promise<Member | undefined>;
-  save(member: Member): Promise<void>;
-  delete(member: Member): Promise<void>;
+  search(input?: SearchInput): Promise<MemberEntity[]>;
+  find(code: string): Promise<MemberEntity | undefined>;
+  save(member: MemberEntity): Promise<void>;
+  delete(member: MemberEntity): Promise<void>;
 }
 
 export class MockMemberRepository implements MemberRepository {
   nextIdentifier (): Promise<number> { return Promise.resolve(0) }
-  search (): Promise<Member[]> { return Promise.resolve([]) }
-  find (): Promise<Member | undefined> { return Promise.resolve(undefined) }
+  search (): Promise<MemberEntity[]> { return Promise.resolve([]) }
+  find (): Promise<MemberEntity | undefined> { return Promise.resolve(undefined) }
   save (): Promise<void> { return Promise.resolve() }
   delete (): Promise<void> { return Promise.resolve() }
 }

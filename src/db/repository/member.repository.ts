@@ -1,6 +1,6 @@
 import { EntityManager, getManager } from 'typeorm'
-import { MemberRepository as IMemberRepository, SearchInput } from '../../app/member/member.repository'
-import { Member as MemberEntity } from '../../domain/entity'
+import { MemberRepository as IMemberRepository, SearchInput } from '../../app/repository/member.repository'
+import { MemberEntity } from '../../domain/entity'
 import { MemberFactory } from '../../domain/factory/member.factory'
 import { Member } from '../entity'
 
