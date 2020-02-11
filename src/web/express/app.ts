@@ -1,7 +1,9 @@
 import express, { Express, NextFunction, Request, Response } from 'express'
 import { Server } from 'http'
 import { DB } from '../../db'
+import { Session as SessionEntity } from '../../db/entity/session'
 import routes from './api'
+import { Session } from './session'
 import { APIValidator } from './validator'
 
 export default class Application {
@@ -16,6 +18,12 @@ export default class Application {
       this.validator.install(this.express)
     ])
 
+    const session = new Session({
+      secret: 'session-secret',
+      storeEntityClass: SessionEntity
+    })
+
+    this.express.use(session.handler)
     this.express.use(express.json())
     this.express.use(express.urlencoded({ extended: true }))
     this.express.use('/api', routes)
