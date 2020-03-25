@@ -3,11 +3,13 @@ import { Server } from 'http'
 import { DB } from '../../db'
 import { Session as SessionEntity } from '../../db/entity/session'
 import routes from './api'
+import { ExpressSentry } from './sentry'
 import { Session } from './session'
 import { APIValidator } from './validator'
 
 export default class Application {
   public readonly express: Express = express()
+  private senry = new ExpressSentry()
   private db = new DB()
   private validator = new APIValidator('./doc/api/index.yaml')
   private server!: Server
@@ -23,10 +25,12 @@ export default class Application {
       storeEntityClass: SessionEntity
     })
 
+    this.express.use(this.senry.requestHandler)
     this.express.use(session.handler)
     this.express.use(express.json())
     this.express.use(express.urlencoded({ extended: true }))
     this.express.use('/api', routes)
+    this.express.use(this.senry.errorHandler)
     this.express.use(this.errorHandler)
   }
 
