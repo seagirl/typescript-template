@@ -70,6 +70,14 @@ export class MemberRepository implements IMemberRepository {
         .into(Member, ['id', 'code'])
         .values({ id: member.id, code: member.code })
         .execute()
+    } else {
+      await this.manager.createQueryBuilder()
+        .update(Member)
+        .set({
+          code: member.code
+        })
+        .where('id = :id', { id: row.id })
+        .execute()
     }
   }
 
