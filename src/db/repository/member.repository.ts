@@ -67,7 +67,7 @@ export class MemberRepository implements IMemberRepository {
     if (!row) {
       await this.manager.createQueryBuilder()
         .insert()
-        .into(Member, ['id', 'code'])
+        .into(Member)
         .values({ id: member.id, code: member.code })
         .execute()
     } else {
