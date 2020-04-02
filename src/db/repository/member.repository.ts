@@ -12,7 +12,7 @@ export class MemberRepository implements IMemberRepository {
       .select([
         'nextval(\'member_id_seq\'::regclass)::int as id'
       ])
-      .from('member', 'member')
+      .from('member_id_seq', 'member_id_seq')
       .limit(1)
       .getRawOne()
     return row.id
@@ -65,10 +65,15 @@ export class MemberRepository implements IMemberRepository {
     const row = await repository.findOne({ where: { code: member.code } })
 
     if (!row) {
+      const values = {
+        id: member.id,
+        code: member.code
+      }
+
       await this.manager.createQueryBuilder()
         .insert()
-        .into(Member)
-        .values({ id: member.id, code: member.code })
+        .into(Member, Object.keys(values))
+        .values(values)
         .execute()
     } else {
       await this.manager.createQueryBuilder()
