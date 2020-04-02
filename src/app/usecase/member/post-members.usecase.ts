@@ -12,7 +12,7 @@ export type PostMembersUseCaseOutput = MemberEntity
 export interface PostMembersUseCaseDependency {
   transaction: Transaction;
   repository: MemberRepository;
-  identifierGenerator: IdentifierGenerator;
+  identifierGenerator: IdentifierGenerator<number>;
 }
 
 export interface PostMembersUsecase extends Usecase {
@@ -22,7 +22,7 @@ export interface PostMembersUsecase extends Usecase {
 export class PostMembersInteractor implements PostMembersUsecase, PostMembersUseCaseDependency {
   repository: MemberRepository
   transaction: Transaction
-  identifierGenerator: IdentifierGenerator
+  identifierGenerator: IdentifierGenerator<number>
 
   constructor (dependency: PostMembersUseCaseDependency) {
     this.repository = dependency.repository

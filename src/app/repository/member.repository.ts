@@ -6,7 +6,7 @@ export interface SearchInput {
   offset?: number;
 }
 
-export interface MemberRepository extends IdentifierGenerator {
+export interface MemberRepository extends IdentifierGenerator<number> {
   search(input?: SearchInput): Promise<MemberEntity[]>;
   find(code: string): Promise<MemberEntity | undefined>;
   save(member: MemberEntity): Promise<void>;
