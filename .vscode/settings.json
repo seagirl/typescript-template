@@ -2,11 +2,13 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.preferences.importModuleSpecifier": "relative",
   "eslint.nodePath": "node_modules",
+  "eslint.codeAction.showDocumentation": { "enable": false },
   "files.autoSave": "off",
   "editor.formatOnSave": false,
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  }
+  "editor.codeActionsOnSave": [
+    "source.organizeImports",
+    "source.fixAll"
+  ]
 }
