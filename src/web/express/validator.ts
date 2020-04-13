@@ -7,7 +7,9 @@ export class APIValidator {
   constructor (apiSpec: string) {
     this.validator = new OpenApiValidator({
       apiSpec: apiSpec,
-      validateRequests: true,
+      validateRequests: {
+        allowUnknownQueryParameters: false
+      },
       validateResponses: true
     })
   }

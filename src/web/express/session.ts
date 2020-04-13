@@ -1,5 +1,5 @@
-import { Ttl, TypeormStore, ISession } from 'connect-typeorm'
-import express from 'express'
+import { ISession, Ttl, TypeormStore } from 'connect-typeorm'
+import express, { NextFunction, Request, RequestHandler, Response } from 'express'
 import ExpressSession from 'express-session'
 import { getManager, Repository } from 'typeorm'
 
@@ -28,5 +28,20 @@ export class Session {
     options.saveUninitialized = options.saveUninitialized ?? false
 
     this.handler = ExpressSession(options)
+  }
+
+  get authorizationHandler (): RequestHandler {
+    return (req: Request, res: Response, next: NextFunction): void => {
+      const authorization = req.header('Authorization')
+      if (authorization != null) {
+        const parts = authorization.split(' ')
+        if (parts.length == 2 && parts[0].toLowerCase() === 'bearer') {
+          const accessToken = parts[1]
+          req.query.accessToken = accessToken
+        }
+      }
+
+      next()
+    }
   }
 }

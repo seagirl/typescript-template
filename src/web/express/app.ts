@@ -15,10 +15,7 @@ export default class Application {
   private server!: Server
 
   async init (): Promise<void> {
-    await Promise.all([
-      this.db.init(),
-      this.validator.install(this.express)
-    ])
+    await this.db.init()
 
     const session = new Session({
       secret: 'session-secret',
@@ -27,11 +24,14 @@ export default class Application {
 
     this.express.use(this.senry.requestHandler)
     this.express.use(session.handler)
+    this.express.use(session.authorizationHandler)
     this.express.use(express.json())
     this.express.use(express.urlencoded({ extended: true }))
     this.express.use('/api', routes)
     this.express.use(this.senry.errorHandler)
     this.express.use(this.errorHandler)
+
+    await this.validator.install(this.express)
   }
 
   start (): void {
