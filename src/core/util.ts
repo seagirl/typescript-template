@@ -1,4 +1,18 @@
 export class Util {
+  static toNumber (value: number | string | undefined): number | undefined {
+    if (value == null) {
+      return
+    }
+
+    const number = Number(value)
+    // return undefined if value is NaN
+    if (number !== number) {
+      return
+    }
+
+    return number
+  }
+
   static toEnum<T, E extends keyof T> (enumType: T, value: E | string | undefined): T[E] | undefined {
     if (value == null) {
       return

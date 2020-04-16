@@ -5,6 +5,13 @@ enum Hoge {
 }
 
 describe('Util', () => {
+  it('toNumber', () => {
+    expect(Util.toNumber(undefined)).toEqual(undefined)
+    expect(Util.toNumber('fugaFuga')).toEqual(undefined)
+    expect(Util.toNumber('1234')).toEqual(1234)
+    expect(Util.toNumber(1234)).toEqual(1234)
+  })
+
   it('toEnum', () => {
     expect(Util.toEnum(Hoge, undefined)).toEqual(undefined)
     expect(Util.toEnum(Hoge, 'fugaFuga')).toEqual('fuga_fuga')
