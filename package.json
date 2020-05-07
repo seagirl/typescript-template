@@ -16,6 +16,10 @@
     "migration:revert": "ts-node ./node_modules/.bin/typeorm migration:revert",
     "migration:create": "ts-node ./node_modules/.bin/typeorm migration:create -n init",
     "migration:generate": "ts-node ./node_modules/.bin/typeorm migration:generate -n init",
+    "migration:js:run": "node ./node_modules/.bin/typeorm migration:run",
+    "migration:js:revert": "node ./node_modules/.bin/typeorm migration:revert",
+    "migration:js:create": "node ./node_modules/.bin/typeorm migration:create -n init",
+    "migration:js:generate": "node ./node_modules/.bin/typeorm migration:generate -n init",
     "test": "jest --coverage"
   },
   "dependencies": {
