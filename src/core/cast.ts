@@ -46,7 +46,20 @@ export function toOptionalNumber (value: number | string | undefined): number | 
   return number
 }
 
-export function toEnum<T, E extends keyof T> (enumType: T, value: E | string | undefined): T[E] | undefined {
+export function toEnum<T, E extends keyof T> (enumType: T, value: E | string | undefined): T[E] {
+  if (value == null) {
+    throw new ServerError('value must be specified.')
+  }
+
+  const aEnum = enumType[value as E]
+  if (aEnum == null) {
+    throw new ServerError(`${value} is not a enum value`)
+  }
+
+  return aEnum
+}
+
+export function toOptionalEnum<T, E extends keyof T> (enumType: T, value: E | string | undefined): T[E] | undefined {
   if (value == null) {
     return
   }

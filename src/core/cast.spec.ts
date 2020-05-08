@@ -1,4 +1,4 @@
-import { toBoolean, toEnum, toNumber, toOptionalBoolean, toOptionalNumber } from './cast'
+import { toBoolean, toEnum, toNumber, toOptionalBoolean, toOptionalEnum, toOptionalNumber } from './cast'
 import { ServerError } from './error'
 
 enum Hoge {
@@ -43,7 +43,14 @@ describe('cast', () => {
   })
 
   it('toEnum', () => {
-    expect(toEnum(Hoge, undefined)).toEqual(undefined)
+    expect(() => { toEnum(Hoge, undefined) }).toThrowError(ServerError)
+    expect(() => { toEnum(Hoge, 'aaa') }).toThrowError(ServerError)
     expect(toEnum(Hoge, 'fugaFuga')).toEqual('fuga_fuga')
+  })
+
+  it('toOptionalEnum', () => {
+    expect(toOptionalEnum(Hoge, undefined)).toEqual(undefined)
+    expect(toOptionalEnum(Hoge, 'aaa')).toEqual(undefined)
+    expect(toOptionalEnum(Hoge, 'fugaFuga')).toEqual('fuga_fuga')
   })
 })
