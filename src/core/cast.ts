@@ -2,7 +2,7 @@ import { ServerError } from './error'
 
 export function toBoolean (value: boolean | number | string | undefined): boolean {
   if (value == null) {
-    throw new ServerError('value must be specified.')
+    throw new ServerError('boolean value must be specified.')
   }
 
   const bool = Boolean(value)
@@ -20,7 +20,7 @@ export function toOptionalBoolean (value: boolean | number | string | undefined)
 
 export function toNumber (value: number | string | undefined): number {
   if (value == null) {
-    throw new ServerError('value must be specified.')
+    throw new ServerError('number value must be specified.')
   }
 
   const number = Number(value)
@@ -48,7 +48,7 @@ export function toOptionalNumber (value: number | string | undefined): number | 
 
 export function toEnum<T, E extends keyof T> (enumType: T, value: E | string | undefined): T[E] {
   if (value == null) {
-    throw new ServerError('value must be specified.')
+    throw new ServerError('enum value must be specified.')
   }
 
   const aEnum = enumType[value as E]
@@ -64,4 +64,22 @@ export function toOptionalEnum<T, E extends keyof T> (enumType: T, value: E | st
     return
   }
   return enumType[value as E]
+}
+
+export function toString (value: number | string | undefined): string {
+  if (value == null) {
+    throw new ServerError('string value must be specified.')
+  }
+  const string = String(value)
+  return string
+}
+
+export function toObject (value: object | undefined): object {
+  if (value == null) {
+    throw new ServerError('object value must be specified.')
+  }
+  if (typeof value != 'object') {
+    throw new ServerError('value is not a object')
+  }
+  return value
 }
