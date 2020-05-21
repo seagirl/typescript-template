@@ -1,14 +1,15 @@
-import { NextFunction, Request, Response } from 'express'
 import * as Sentry from '@sentry/node'
+import { NextFunction, Request, Response } from 'express'
 
 export class ExpressSentry {
   public requestHandler: (req: Request, res: Response, next: NextFunction) => void
   public errorHandler: (error: Error, req: Request, res: Response, next: NextFunction) => void
 
-  constructor () {
+  constructor (dsn: string) {
+
     Sentry.init({
       environment: process.env.NODE_ENV ?? 'local',
-      dsn: process.env.SENTRY_DSN
+      dsn: dsn
     })
 
     this.requestHandler = Sentry.Handlers.requestHandler()
