@@ -25,7 +25,8 @@
     "@typescript-eslint/camelcase": ["error", { "properties": "never", "allow": ["^[A-Za-z][a-zA-Za-z]+_[A-Za-z]+$"] }],
     "@typescript-eslint/space-before-function-paren": ["error"],
     "@typescript-eslint/no-var-requires": "error",
-    "@typescript-eslint/class-name-casing": "error"
+    "@typescript-eslint/class-name-casing": "error",
+    "no-trailing-spaces": ["error", { "ignoreComments": true, "skipBlankLines": false }]
   },
   "env": {
     "jest": true
