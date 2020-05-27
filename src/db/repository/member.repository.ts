@@ -8,7 +8,7 @@ export class MemberRepository implements IMemberRepository {
   private manager: EntityManager = getManager()
 
   async nextIdentifier (): Promise<number> {
-    const row = await getManager().createQueryBuilder()
+    const row = await this.manager.createQueryBuilder()
       .select([
         'nextval(\'member_id_seq\'::regclass)::int as id'
       ])
