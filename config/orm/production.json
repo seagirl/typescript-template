@@ -6,7 +6,7 @@
   "password": "",
   "database": "APP_NAME",
   "synchronize": false,
-  "logging": false,
+  "logging": ["error"],
   "entities": ["dist/db/entity/**/*.js"],
   "migrations": ["dist/db/migration/**/*.js"],
   "subscribers": ["dist/db/subscriber/**/*.js"],
