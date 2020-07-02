@@ -18,10 +18,10 @@ export default class Application {
   private server!: Server
 
   async init (): Promise<void> {
-    await this.db.init()
-
     const config = await loadConfig()
     this.sentry = new ExpressSentry(config.sentryDSN)
+
+    await this.db.init()
 
     const session = new Session({
       secret: 'humanity-session-secret-tha-s2',
@@ -82,14 +82,16 @@ export default class Application {
   }
 
   private shutdownHandler = (): void => {
-    this.finish()
-      .finally(() => {
-        console.log('Closing HTTP Server.')
+    console.log('Closing HTTP Server.')
 
-        this.server.close(() => {
-          console.log('HTTP Server closed.')
-          process.exit()
-        })
+    this.server.close(() => {
+      console.log('HTTP Server closed.')
+
+      this.finish().finally(() => {
+        console.log('DB connection closed.')
+
+        process.exit()
       })
+    })
   }
 }
