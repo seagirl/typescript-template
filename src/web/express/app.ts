@@ -50,6 +50,10 @@ export default class Application {
     this.server = this.express.listen(port, () => {
       console.log(`Example app listening on port ${port}!`)
     })
+    // AWS ELB のデフォルトが 60sec なのでそれより長くする
+    this.server.keepAliveTimeout = 120000
+    // headersTimeout は keepAliveTimeout より長い必要がある
+    this.server.headersTimeout = 130000
   }
 
   async finish (): Promise<void> {

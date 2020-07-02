@@ -1,6 +1,7 @@
 {
   "name": "APP_NAME",
   "script": "dist/web/express/index.js",
+  "kill_timeout": 5000,
   "instances": "max",
   "env": {
     "NODE_ENV": "production",
