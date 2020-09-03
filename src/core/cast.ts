@@ -1,6 +1,6 @@
 import { ServerError } from './error'
 
-export function toBoolean (value: boolean | number | string | undefined): boolean {
+export function toBoolean (value: boolean | number | string | unknown | undefined): boolean {
   if (value == null) {
     throw new ServerError('boolean value must be specified.')
   }
@@ -9,7 +9,7 @@ export function toBoolean (value: boolean | number | string | undefined): boolea
   return bool
 }
 
-export function toOptionalBoolean (value: boolean | number | string | undefined): boolean | undefined {
+export function toOptionalBoolean (value: boolean | number | string | unknown | undefined): boolean | undefined {
   if (value == null) {
     return
   }
@@ -18,7 +18,7 @@ export function toOptionalBoolean (value: boolean | number | string | undefined)
   return bool
 }
 
-export function toNumber (value: number | string | undefined): number {
+export function toNumber (value: number | string | unknown | undefined): number {
   if (value == null) {
     throw new ServerError('number value must be specified.')
   }
@@ -32,7 +32,7 @@ export function toNumber (value: number | string | undefined): number {
   return number
 }
 
-export function toOptionalNumber (value: number | string | undefined): number | undefined {
+export function toOptionalNumber (value: number | string | unknown | undefined): number | undefined {
   if (value == null) {
     return
   }
@@ -46,7 +46,23 @@ export function toOptionalNumber (value: number | string | undefined): number | 
   return number
 }
 
-export function toEnum<T, E extends keyof T> (enumType: T, value: E | string | undefined): T[E] {
+export function toString (value: number | string | unknown | undefined): string {
+  if (value == null) {
+    throw new ServerError('string value must be specified.')
+  }
+  const string = String(value)
+  return string
+}
+
+export function toOptionalString (value: number | string | unknown | undefined): string | undefined {
+  if (value == null) {
+    return
+  }
+  const string = String(value)
+  return string
+}
+
+export function toEnum<T, E extends keyof T> (enumType: T, value: E | string | unknown | undefined): T[E] {
   if (value == null) {
     throw new ServerError('enum value must be specified.')
   }
@@ -59,27 +75,65 @@ export function toEnum<T, E extends keyof T> (enumType: T, value: E | string | u
   return aEnum
 }
 
-export function toOptionalEnum<T, E extends keyof T> (enumType: T, value: E | string | undefined): T[E] | undefined {
+export function toOptionalEnum<T, E extends keyof T> (enumType: T, value: E | string | unknown | undefined): T[E] | undefined {
   if (value == null) {
     return
   }
   return enumType[value as E]
 }
 
-export function toString (value: number | string | undefined): string {
-  if (value == null) {
-    throw new ServerError('string value must be specified.')
-  }
-  const string = String(value)
-  return string
-}
-
-export function toObject (value: object | undefined): object {
+export function toObject (value: object | unknown | undefined): object {
   if (value == null) {
     throw new ServerError('object value must be specified.')
   }
   if (typeof value != 'object') {
     throw new ServerError('value is not a object')
   }
-  return value
+  return value as object
+}
+
+export function toOptionalObject (value: object | unknown | undefined): object | undefined {
+  if (value == null) {
+    return
+  }
+  if (typeof value != 'object') {
+    throw new ServerError('value is not a object')
+  }
+  return value as object
+}
+
+export function toBooleanArray (value: object | unknown | undefined): boolean[] {
+  if (value == null) {
+    throw new ServerError('array value must be specified.')
+  }
+  if (!Array.isArray(value)) {
+    throw new ServerError('value is not a object')
+  }
+  return value.map(n => {
+    return toBoolean(n)
+  })
+}
+
+export function toNumberArray (value: object | unknown | undefined): number[] {
+  if (value == null) {
+    throw new ServerError('array value must be specified.')
+  }
+  if (!Array.isArray(value)) {
+    throw new ServerError('value is not a object')
+  }
+  return value.map(n => {
+    return toNumber(n)
+  })
+}
+
+export function toStringArray (value: object | unknown | undefined): string[] {
+  if (value == null) {
+    throw new ServerError('array value must be specified.')
+  }
+  if (!Array.isArray(value)) {
+    throw new ServerError('value is not a object')
+  }
+  return value.map(n => {
+    return toString(n)
+  })
 }
