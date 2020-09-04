@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface Query { [key: string]: undefined | string | string[] | Query | Query[] }
+
 export interface Request {
-  body: any;
-  query: any;
-  params: any;
+  body?: { [key: string]: unknown };
+  query: Query;
+  params: { [key: string]: string | string[] | undefined };
 }
