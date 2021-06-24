@@ -2,12 +2,15 @@ import { EntityManager, getManager, QueryRunner } from 'typeorm'
 import { Transaction as ITransaction } from '../core'
 
 export class Transaction implements ITransaction {
-  private manager: EntityManager
+  readonly manager: EntityManager
+
+  private parentManager: EntityManager
   private queryRunner: QueryRunner
 
   constructor () {
-    this.manager = getManager()
-    this.queryRunner = this.manager.queryRunner || this.manager.connection.createQueryRunner()
+    this.parentManager = getManager()
+    this.queryRunner = this.parentManager.queryRunner || this.parentManager.connection.createQueryRunner()
+    this.manager = this.queryRunner.manager
   }
 
   async begin (): Promise<void> {

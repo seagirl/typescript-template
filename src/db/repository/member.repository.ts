@@ -5,7 +5,11 @@ import { MemberFactory } from '../../domain/factory/member.factory'
 import { Member } from '../entity'
 
 export class MemberRepository implements IMemberRepository {
-  private manager: EntityManager = getManager()
+  private manager: EntityManager
+
+  constructor (manager: EntityManager = getManager()) {
+    this.manager = manager
+  }
 
   async nextIdentifier (): Promise<number> {
     const row = await this.manager.createQueryBuilder()
