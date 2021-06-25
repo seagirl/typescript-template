@@ -8,24 +8,6 @@ import { translateRecord } from '../../../../core/web/translator'
 import { MemberRepository } from '../../../../db/repository/member.repository'
 import { Transaction } from '../../../../db/transaction'
 
-export class PostMembersHandler extends Handler {
-  constructor () {
-    super()
-
-    const transaction = new Transaction()
-    const memberRepository = new MemberRepository(transaction.manager)
-
-    const usecase = new PostMembersInteractor({
-      transaction: transaction,
-      memberRepository: memberRepository,
-      memberIdentifierGenerator: memberRepository
-    })
-
-    this.controller = new PostMembersController(usecase)
-    this.presenter = new PostMembersPresenter()
-  }
-}
-
 class PostMembersController implements Controller {
   constructor (public interactor: Usecase) {}
 
@@ -41,5 +23,23 @@ class PostMembersPresenter implements Presenter {
       response: 'ok',
       ...translateRecord(snakeCase, response),
     }
+  }
+}
+
+export class PostMembersHandler extends Handler {
+  constructor () {
+    super()
+
+    const transaction = new Transaction()
+    const memberRepository = new MemberRepository(transaction.manager)
+
+    const usecase = new PostMembersInteractor({
+      transaction: transaction,
+      memberRepository: memberRepository,
+      memberIdentifierGenerator: memberRepository
+    })
+
+    this.controller = new PostMembersController(usecase)
+    this.presenter = new PostMembersPresenter()
   }
 }

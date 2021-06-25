@@ -7,18 +7,6 @@ import { mergeParameters, Request } from '../../../../core/web/express/request'
 import { translateRecord } from '../../../../core/web/translator'
 import { MemberRepository } from '../../../../db/repository/member.repository'
 
-export class GetMemberHandler extends Handler {
-  constructor () {
-    super()
-
-    const memberRepository = new MemberRepository()
-    const usecase = new GetMemberInteractor({ memberRepository: memberRepository })
-
-    this.controller = new GetMemberController(usecase)
-    this.presenter = new GetMemberPresenter()
-  }
-}
-
 class GetMemberController implements Controller {
   constructor (public interactor: Usecase) {}
 
@@ -35,5 +23,17 @@ class GetMemberPresenter implements Presenter {
       response: 'ok',
       ...translateRecord(snakeCase, response),
     }
+  }
+}
+
+export class GetMemberHandler extends Handler {
+  constructor () {
+    super()
+
+    const memberRepository = new MemberRepository()
+    const usecase = new GetMemberInteractor({ memberRepository: memberRepository })
+
+    this.controller = new GetMemberController(usecase)
+    this.presenter = new GetMemberPresenter()
   }
 }

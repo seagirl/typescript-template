@@ -8,23 +8,6 @@ import { translateRecord } from '../../../../core/web/translator'
 import { MemberRepository } from '../../../../db/repository/member.repository'
 import { Transaction } from '../../../../db/transaction'
 
-export class DeleteMemberHandler extends Handler {
-  constructor () {
-    super()
-
-    const transaction = new Transaction()
-    const memberRepository = new MemberRepository(transaction.manager)
-
-    const usecase = new DeleteMemberInteractor({
-      transaction: transaction,
-      memberRepository: memberRepository,
-    })
-
-    this.controller = new DeleteMemberController(usecase)
-    this.presenter = new DeleteMemberPresenter()
-  }
-}
-
 class DeleteMemberController implements Controller {
   constructor (public interactor: Usecase) {}
 
@@ -40,5 +23,22 @@ class DeleteMemberPresenter implements Presenter {
       response: 'ok',
       ...translateRecord(snakeCase, response),
     }
+  }
+}
+
+export class DeleteMemberHandler extends Handler {
+  constructor () {
+    super()
+
+    const transaction = new Transaction()
+    const memberRepository = new MemberRepository(transaction.manager)
+
+    const usecase = new DeleteMemberInteractor({
+      transaction: transaction,
+      memberRepository: memberRepository,
+    })
+
+    this.controller = new DeleteMemberController(usecase)
+    this.presenter = new DeleteMemberPresenter()
   }
 }
