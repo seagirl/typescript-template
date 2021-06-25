@@ -2,6 +2,7 @@ import { calledTimes, mockReturnValues } from '../../../core/test/mock'
 import { MemberFactory } from '../../../domain/factory/member.factory'
 import { mockMemberRepository } from '../../../domain/repository/member.repository'
 import { GetMembersInteractor } from './get-members.usecase'
+import { translate } from './translator'
 
 const testMember = MemberFactory.createMock()
 
@@ -35,7 +36,7 @@ describe('GetMembersInteractor', () => {
     })
 
     const result = await interactor.execute({})
-    expect(result).toEqual({ data: [testMember] })
+    expect(result).toEqual({ members: [translate(testMember)] })
 
     expect(calledTimes(scenario))
       .toEqual({

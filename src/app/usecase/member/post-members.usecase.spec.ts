@@ -3,6 +3,7 @@ import { calledTimes, mockRejectedValues, mockReturnValues } from '../../../core
 import { MemberFactory } from '../../../domain/factory/member.factory'
 import { mockMemberRepository } from '../../../domain/repository/member.repository'
 import { PostMembersInteractor } from './post-members.usecase'
+import { translate } from './translator'
 
 const testMember = MemberFactory.createMock()
 
@@ -51,7 +52,7 @@ describe('PostMembersInteractor', () => {
     })
 
     const result = await interactor.execute({ code: testMember.code })
-    expect(result).toEqual(testMember)
+    expect(result).toEqual(translate(testMember))
 
     expect(calledTimes(scenario))
       .toEqual({
@@ -59,7 +60,7 @@ describe('PostMembersInteractor', () => {
         transactioCommitSpy: 1,
         transactioRollbackSpy: 0,
         transactionCloseSpy: 1,
-        repositoryNextIdentifierSpy: 1,
+        memberRepositoryNextIdentifierSpy: 1,
         memberRepositoryFindSpy: 1,
         memberRepositorySaveSpy: 1,
       })
@@ -80,7 +81,7 @@ describe('PostMembersInteractor', () => {
         transactioCommitSpy: 0,
         transactioRollbackSpy: 0,
         transactionCloseSpy: 0,
-        repositoryNextIdentifierSpy: 0,
+        memberRepositoryNextIdentifierSpy: 0,
         memberRepositoryFindSpy: 1,
         memberRepositorySaveSpy: 0,
       })
@@ -97,7 +98,7 @@ describe('PostMembersInteractor', () => {
     })
 
     const result = await interactor.execute({ code: testMember.code })
-    expect(result).toEqual(testMember)
+    expect(result).toEqual(translate(testMember))
 
     expect(calledTimes(scenario))
       .toEqual({
@@ -105,7 +106,7 @@ describe('PostMembersInteractor', () => {
         transactioCommitSpy: 0,
         transactioRollbackSpy: 1,
         transactionCloseSpy: 1,
-        repositoryNextIdentifierSpy: 1,
+        memberRepositoryNextIdentifierSpy: 1,
         memberRepositoryFindSpy: 1,
         memberRepositorySaveSpy: 1,
       })

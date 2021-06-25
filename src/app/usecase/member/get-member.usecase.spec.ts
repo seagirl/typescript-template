@@ -3,6 +3,7 @@ import { calledTimes, mockReturnValues } from '../../../core/test/mock'
 import { MemberFactory } from '../../../domain/factory/member.factory'
 import { mockMemberRepository } from '../../../domain/repository/member.repository'
 import { GetMemberInteractor } from './get-member.usecase'
+import { translate } from './translator'
 
 const testMember = MemberFactory.createMock()
 
@@ -36,7 +37,7 @@ describe('GetMemberInteractor', () => {
     })
 
     const result = await interactor.execute({ code: testMember.code })
-    expect(result).toEqual(testMember)
+    expect(result).toEqual(translate(testMember))
 
     expect(calledTimes(scenario))
       .toEqual({
@@ -52,7 +53,7 @@ describe('GetMemberInteractor', () => {
     await expect(interactor.execute({ code: testMember.code })).rejects
       .toEqual(new ClientError('test is not found.'))
 
-      expect(calledTimes(scenario))
+    expect(calledTimes(scenario))
       .toEqual({
         memberRepositoryFindSpy: 1,
       })
