@@ -1,6 +1,6 @@
 import supertest from 'supertest'
-import { checkStatus } from '../../../../core/test/supertest'
-import Application from '../../app'
+import { checkStatus } from '../../../core/test/supertest'
+import Application from '../app'
 
 const testCode = 'test'
 const app = new Application()

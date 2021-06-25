@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import memberRoutes from './member'
+import memberRoutes from './member.api'
 
 const router = Router()
 router.use(memberRoutes)
