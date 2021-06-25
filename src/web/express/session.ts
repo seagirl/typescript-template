@@ -10,7 +10,7 @@ type SessionOptions = Partial<ExpressSession.SessionOptions & {
 }> & {
   secret: string;
   // eslint-disable-next-line @typescript-eslint/ban-types
-  storeTableName: String;
+  storeTableName: string;
 }
 
 export class Session {
