@@ -86,7 +86,7 @@ export class MemberRepository implements IMemberRepository {
         .set({
           code: member.code
         })
-        .where('id = :id', { id: row.id })
+        .where('id = :id', { id: member.id })
         .execute()
     }
   }

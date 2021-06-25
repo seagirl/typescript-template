@@ -3,7 +3,6 @@ import { Server } from 'http'
 import { DateTime } from 'luxon'
 import { loadConfig } from '../../config'
 import { DB } from '../../db'
-import { ExpressSessions as SessionEntity } from '../../db/entity/express-sessions'
 import routes from './api'
 import { corsHandler } from './cors'
 import { OpenAPIValidator } from './openapi-validator'
@@ -32,8 +31,8 @@ export default class Application {
     await this.db.init()
 
     const session = new Session({
-      secret: 'humanity-session-secret-tha-s2',
-      storeEntityClass: SessionEntity
+      secret: 'session-secret-s2',
+      storeTableName: 'express_sessions'
     })
 
     if (config.trustProxy != null) {

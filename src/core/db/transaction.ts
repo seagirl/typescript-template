@@ -11,3 +11,5 @@ export class MockTransaction implements Transaction {
   rollback (): Promise<void> { return Promise.resolve() }
   close (): Promise<void> { return Promise.resolve() }
 }
+
+export const mockTransaction = new MockTransaction()

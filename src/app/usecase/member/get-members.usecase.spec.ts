@@ -39,7 +39,7 @@ describe('GetMembersInteractor', () => {
 
     expect(calledTimes(scenario))
       .toEqual({
-        repositorySearchSpy: 1,
+        memberRepositorySearchSpy: 1,
       })
   })
 })

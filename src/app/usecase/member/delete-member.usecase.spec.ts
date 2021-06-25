@@ -1,32 +1,39 @@
-import { ClientError, MockTransaction } from '../../../core'
+import { ClientError, mockTransaction } from '../../../core'
+import { calledTimes, mockRejectedValues, mockReturnValues } from '../../../core/test/mock'
 import { MemberFactory } from '../../../domain/factory/member.factory'
-import { MockMemberRepository } from '../../../domain/repository/member.repository'
+import { mockMemberRepository } from '../../../domain/repository/member.repository'
 import { DeleteMemberInteractor } from './delete-member.usecase'
 
 const testMember = MemberFactory.createMock()
 
-const transaction = new MockTransaction()
-const repository = new MockMemberRepository()
-const interactor = new DeleteMemberInteractor({
-  transaction: transaction,
-  repository: repository
-})
+const dependency = {
+  transaction: mockTransaction,
+  memberRepository: mockMemberRepository
+}
 
-let transactionBeginSpy: jest.SpyInstance
-let transactioCommitSpy: jest.SpyInstance
-let transactioRollbackSpy: jest.SpyInstance
-let transactionCloseSpy: jest.SpyInstance
-let repositoryFindSpy: jest.SpyInstance
-let repositoryDeleteSpy: jest.SpyInstance
+const interactor = new DeleteMemberInteractor(dependency)
+
+interface Scenario {
+  transactionBeginSpy: jest.SpyInstance;
+  transactioCommitSpy: jest.SpyInstance;
+  transactioRollbackSpy: jest.SpyInstance;
+  transactionCloseSpy: jest.SpyInstance;
+  memberRepositoryFindSpy: jest.SpyInstance;
+  memberRepositoryDeleteSpy: jest.SpyInstance;
+}
+
+let scenario: Scenario
 
 describe('DeleteMemberInteractor', () => {
   beforeEach(() => {
-    transactionBeginSpy = jest.spyOn(transaction, 'begin')
-    transactioCommitSpy = jest.spyOn(transaction, 'commit')
-    transactioRollbackSpy = jest.spyOn(transaction, 'rollback')
-    transactionCloseSpy = jest.spyOn(transaction, 'close')
-    repositoryFindSpy = jest.spyOn(repository, 'find')
-    repositoryDeleteSpy = jest.spyOn(repository, 'delete')
+    scenario = {
+      transactionBeginSpy: jest.spyOn(mockTransaction, 'begin'),
+      transactioCommitSpy: jest.spyOn(mockTransaction, 'commit'),
+      transactioRollbackSpy: jest.spyOn(mockTransaction, 'rollback'),
+      transactionCloseSpy: jest.spyOn(mockTransaction, 'close'),
+      memberRepositoryFindSpy: jest.spyOn(mockMemberRepository, 'find'),
+      memberRepositoryDeleteSpy: jest.spyOn(mockMemberRepository, 'delete'),
+    }
   })
 
   afterEach(() => {
@@ -35,45 +42,63 @@ describe('DeleteMemberInteractor', () => {
   })
 
   it('execute', async () => {
-    repositoryFindSpy.mockReturnValue(Promise.resolve(testMember))
+    mockReturnValues(scenario, {
+      memberRepositoryFindSpy: Promise.resolve(testMember)
+    })
 
     const result = await interactor.execute({ code: testMember.code })
     expect(result).toEqual({})
 
-    expect(transactionBeginSpy).toHaveBeenCalledTimes(1)
-    expect(transactioCommitSpy).toHaveBeenCalledTimes(1)
-    expect(transactioRollbackSpy).toHaveBeenCalledTimes(0)
-    expect(transactionCloseSpy).toHaveBeenCalledTimes(1)
-    expect(repositoryFindSpy).toHaveBeenCalledTimes(1)
-    expect(repositoryDeleteSpy).toHaveBeenCalledTimes(1)
+    expect(calledTimes(scenario))
+      .toEqual({
+        transactionBeginSpy: 1,
+        transactioCommitSpy: 1,
+        transactioRollbackSpy: 0,
+        transactionCloseSpy: 1,
+        memberRepositoryFindSpy: 1,
+        memberRepositoryDeleteSpy: 1,
+      })
   })
 
   it('find error', async () => {
-    repositoryFindSpy.mockReturnValue(Promise.resolve(undefined))
+    mockReturnValues(scenario, {
+      memberRepositoryFindSpy: Promise.resolve(undefined)
+    })
 
     await expect(interactor.execute({ code: testMember.code })).rejects
       .toEqual(new ClientError('test is not found.'))
 
-    expect(transactionBeginSpy).toHaveBeenCalledTimes(0)
-    expect(transactioCommitSpy).toHaveBeenCalledTimes(0)
-    expect(transactioRollbackSpy).toHaveBeenCalledTimes(0)
-    expect(transactionCloseSpy).toHaveBeenCalledTimes(0)
-    expect(repositoryFindSpy).toHaveBeenCalledTimes(1)
-    expect(repositoryDeleteSpy).toHaveBeenCalledTimes(0)
+    expect(calledTimes(scenario))
+      .toEqual({
+        transactionBeginSpy: 0,
+        transactioCommitSpy: 0,
+        transactioRollbackSpy: 0,
+        transactionCloseSpy: 0,
+        memberRepositoryFindSpy: 1,
+        memberRepositoryDeleteSpy: 0,
+      })
   })
 
   it('delete error', async () => {
-    repositoryFindSpy.mockReturnValue(Promise.resolve(testMember))
-    repositoryDeleteSpy.mockRejectedValue(new Error('ERROR!!!'))
+    mockReturnValues(scenario, {
+      memberRepositoryFindSpy: Promise.resolve(testMember)
+    })
+
+    mockRejectedValues(scenario, {
+      memberRepositoryDeleteSpy: Promise.resolve(new Error('ERROR!!!'))
+    })
 
     const result = await interactor.execute({ code: testMember.code })
     expect(result).toEqual({})
 
-    expect(transactionBeginSpy).toHaveBeenCalledTimes(1)
-    expect(transactioCommitSpy).toHaveBeenCalledTimes(0)
-    expect(transactioRollbackSpy).toHaveBeenCalledTimes(1)
-    expect(transactionCloseSpy).toHaveBeenCalledTimes(1)
-    expect(repositoryFindSpy).toHaveBeenCalledTimes(1)
-    expect(repositoryDeleteSpy).toHaveBeenCalledTimes(1)
+    expect(calledTimes(scenario))
+      .toEqual({
+        transactionBeginSpy: 1,
+        transactioCommitSpy: 0,
+        transactioRollbackSpy: 1,
+        transactionCloseSpy: 1,
+        memberRepositoryFindSpy: 1,
+        memberRepositoryDeleteSpy: 1,
+      })
   })
 })

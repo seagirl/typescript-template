@@ -10,14 +10,14 @@ type SessionOptions = Partial<ExpressSession.SessionOptions & {
 }> & {
   secret: string;
   // eslint-disable-next-line @typescript-eslint/ban-types
-  storeEntityClass: Function;
+  storeTableName: String;
 }
 
 export class Session {
   public readonly handler: express.RequestHandler
 
   constructor (options: SessionOptions) {
-    const repository: Repository<ISession> = getManager().getRepository(options.storeEntityClass)
+    const repository: Repository<ISession> = getManager().getRepository(options.storeTableName)
 
     options.cleanupLimit = options.cleanupLimit ?? 2
     options.ttl = options.ttl ?? 60 * 60 * 24 * 14

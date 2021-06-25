@@ -19,6 +19,16 @@ export const mockImplementations = <T, U extends ((...args: any) => any)>(target
   })
 }
 
+export const mockRejectedValues = <T, U>(target: { [key in keyof T]: jest.SpyInstance }, retuenValues: { [key in keyof T]: U }): void => {
+  Object.keys(target).forEach(key => {
+    const spy = target[key as keyof T]
+    const value = retuenValues[key as keyof T]
+    if (key in retuenValues) {
+      spy.mockRejectedValue(value)
+    }
+  })
+}
+
 export const calledTimes = <T>(target: { [key in keyof T]: jest.SpyInstance }): { [key in keyof T]: number } => {
   const entries = Object.keys(target)
     .map(key => {
