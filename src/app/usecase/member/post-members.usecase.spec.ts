@@ -52,7 +52,7 @@ describe('PostMembersInteractor', () => {
     })
 
     const result = await interactor.execute({ code: testMember.code })
-    expect(result).toEqual(translate(testMember))
+    expect(result).toEqual({ member: translate(testMember) })
 
     expect(calledTimes(scenario))
       .toEqual({
@@ -98,7 +98,7 @@ describe('PostMembersInteractor', () => {
     })
 
     const result = await interactor.execute({ code: testMember.code })
-    expect(result).toEqual(translate(testMember))
+    expect(result).toEqual({ member: translate(testMember) })
 
     expect(calledTimes(scenario))
       .toEqual({
