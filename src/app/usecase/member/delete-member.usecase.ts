@@ -1,45 +1,35 @@
 import { ClientError, Transaction, Usecase } from '../../../core'
-import { MemberRepository } from '../../repository/member.repository'
+import { MemberRepository } from '../../../domain/repository/member.repository'
 
-export interface DeleteMemberUseCaseInput {
+export interface Props {
+  transaction: Transaction;
+  memberRepository: MemberRepository;
+}
+
+export interface Request {
   code: string;
 }
 
-export type DeleteMemberUseCaseOutput = object
+export type Response = Record<string, unknown>
 
-export interface DeleteMemberUseCaseDependency {
-  transaction: Transaction;
-  repository: MemberRepository;
-}
+export class DeleteMemberInteractor implements Usecase {
+  constructor (readonly props: Props) {}
 
-export interface DeleteMemberUsecase extends Usecase {
-  execute (input: DeleteMemberUseCaseInput): Promise<DeleteMemberUseCaseOutput>;
-}
-
-export class DeleteMemberInteractor implements DeleteMemberUsecase, DeleteMemberUseCaseDependency {
-  repository: MemberRepository
-  transaction: Transaction
-
-  constructor (dependency: DeleteMemberUseCaseDependency) {
-    this.repository = dependency.repository
-    this.transaction = dependency.transaction
-  }
-
-  async execute (input: DeleteMemberUseCaseInput): Promise<DeleteMemberUseCaseOutput> {
-    const member = await this.repository.find(input.code)
+  async execute (input: Request): Promise<Response> {
+    const member = await this.props.memberRepository.find(input.code)
     if (!member) {
       throw new ClientError(`${input.code} is not found.`)
     }
 
-    await this.transaction.begin()
+    await this.props.transaction.begin()
 
     try {
-      await this.repository.delete(member)
-      await this.transaction.commit()
+      await this.props.memberRepository.delete(member)
+      await this.props.transaction.commit()
     } catch {
-      await this.transaction.rollback()
+      await this.props.transaction.rollback()
     } finally {
-      this.transaction.close()
+      await this.props.transaction.close()
     }
 
     return {}

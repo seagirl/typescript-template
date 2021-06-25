@@ -1,5 +1,6 @@
 import supertest from 'supertest'
-import Application from '../app'
+import { checkStatus } from '../../../../core/test/supertest'
+import Application from '../../app'
 
 const testCode = 'test'
 const app = new Application()
@@ -16,24 +17,18 @@ describe('Member API', () => {
   it('POST /api/members', async () => {
     const request = supertest(app.express)
     const response = await request.post('/api/members').query({ code: testCode })
+    checkStatus(response)
+
     const body = response.body
-
-    if (response.status != 200)
-      console.log(response.text)
-
-    expect(response.status).toBe(200)
     expect(body.response).toBe('ok')
   })
 
   it('GET /api/members', async () => {
     const request = supertest(app.express)
     const response = await request.get('/api/members')
+    checkStatus(response)
+
     const body = response.body
-
-    if (response.status != 200)
-      console.log(response.text)
-
-    expect(response.status).toBe(200)
     expect(body.response).toBe('ok')
 
     expect(body.members).toEqual(
@@ -48,12 +43,9 @@ describe('Member API', () => {
   it('GET /api/member/:code', async () => {
     const request = supertest(app.express)
     const response = await request.get('/api/members/' + testCode)
+    checkStatus(response)
+
     const body = response.body
-
-    if (response.status != 200)
-      console.log(response.text)
-
-    expect(response.status).toBe(200)
     expect(body.response).toBe('ok')
 
     expect(body.member).toEqual(
@@ -66,12 +58,9 @@ describe('Member API', () => {
   it('DELETE /api/members/:code', async () => {
     const request = supertest(app.express)
     const response = await request.delete('/api/members/' + testCode)
+    checkStatus(response)
+
     const body = response.body
-
-    if (response.status != 200)
-      console.log(response.text)
-
-    expect(response.status).toBe(200)
     expect(body.response).toBe('ok')
   })
 })

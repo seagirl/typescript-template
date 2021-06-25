@@ -4,7 +4,7 @@ export function upperCamelCase (str: string | undefined): string | undefined {
     return
   }
   str = str.charAt(0).toUpperCase() + str.slice(1)
-  return str.replace(/[-_](.)/g, function (match, group1) {
+  return str.replace(/[-_](.)/g, function (match, group1: string) {
     return group1.toUpperCase()
   })
 }
@@ -14,7 +14,7 @@ export function lowerCamelCase (str: string | undefined): string | undefined {
     return
   }
   str = str.charAt(0).toLowerCase() + str.slice(1)
-  return str.replace(/[-_](.)/g, function (match, group1) {
+  return str.replace(/[-_](.)/g, function (match, group1: string) {
     return group1.toUpperCase()
   })
 }

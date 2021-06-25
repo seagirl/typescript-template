@@ -1,10 +1,11 @@
 import { EntityManager, getManager } from 'typeorm'
-import { MemberRepository as IMemberRepository, SearchInput } from '../../app/repository/member.repository'
-import { MemberEntity } from '../../domain/entity'
+import { MemberEntity } from '../../domain/entity/member.entity'
 import { MemberFactory } from '../../domain/factory/member.factory'
-import { Member } from '../entity'
+import { MemberRepository as IMemberRepository, SearchInput } from '../../domain/repository/member.repository'
 
 export class MemberRepository implements IMemberRepository {
+  private tableName = 'member'
+
   private manager: EntityManager
 
   constructor (manager: EntityManager = getManager()) {
@@ -28,14 +29,14 @@ export class MemberRepository implements IMemberRepository {
         'member.id as id',
         'member.code as code',
       ])
-      .from(Member, 'member')
+      .from(this.tableName, this.tableName)
       .orderBy('member.id')
       .limit(input.limit)
       .offset(input.offset)
 
     const rows = await query.getRawMany()
 
-    return rows.map(row => {
+    return rows.map((row: any) => {
       return MemberFactory.create({
         id: row.id,
         code: row.code,
@@ -49,7 +50,7 @@ export class MemberRepository implements IMemberRepository {
         'member.id as id',
         'member.code as code',
       ])
-      .from(Member, 'member')
+      .from(this.tableName, this.tableName)
       .where('member.code = :code', { code: code })
       .orderBy('member.id')
       .getRawOne()
@@ -65,7 +66,7 @@ export class MemberRepository implements IMemberRepository {
   }
 
   async save (member: MemberEntity): Promise<void> {
-    const repository = this.manager.getRepository(Member)
+    const repository = this.manager.getRepository(this.tableName)
     const row = await repository.findOne({ where: { code: member.code } })
 
     if (!row) {
@@ -76,12 +77,12 @@ export class MemberRepository implements IMemberRepository {
 
       await this.manager.createQueryBuilder()
         .insert()
-        .into(Member, Object.keys(values))
+        .into(this.tableName, Object.keys(values))
         .values(values)
         .execute()
     } else {
       await this.manager.createQueryBuilder()
-        .update(Member)
+        .update(this.tableName)
         .set({
           code: member.code
         })
@@ -93,7 +94,7 @@ export class MemberRepository implements IMemberRepository {
   async delete (member: MemberEntity): Promise<void> {
     await this.manager.createQueryBuilder()
       .delete()
-      .from(Member)
+      .from(this.tableName)
       .where({ code: member.code })
       .execute()
   }

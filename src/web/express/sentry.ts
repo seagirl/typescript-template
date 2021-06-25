@@ -15,8 +15,12 @@ export class ExpressSentry {
     this.requestHandler = Sentry.Handlers.requestHandler()
     this.errorHandler = Sentry.Handlers.errorHandler({
       shouldHandleError: (err): boolean => {
+        const env = process.env.NODE_ENV ?? 'local'
         const statusCode = err.status || 500
-        return statusCode !== 404 && statusCode >= 400
+        if (env === 'staging' || env === 'production') {
+          return statusCode !== 404 && statusCode >= 400
+        }
+        return statusCode !== 404 && statusCode >= 500
       }
     })
   }

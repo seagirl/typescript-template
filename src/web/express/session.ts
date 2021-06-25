@@ -9,6 +9,7 @@ type SessionOptions = Partial<ExpressSession.SessionOptions & {
   ttl: Ttl;
 }> & {
   secret: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   storeEntityClass: Function;
 }
 
@@ -32,6 +33,8 @@ export class Session {
 
   get authorizationHandler (): RequestHandler {
     return (req: Request, res: Response, next: NextFunction): void => {
+      req.query.accessToken = ''
+
       const authorization = req.header('Authorization')
       if (authorization != null) {
         const parts = authorization.split(' ')

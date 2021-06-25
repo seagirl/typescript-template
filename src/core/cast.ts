@@ -26,7 +26,7 @@ export function toNumber (value: number | string | unknown | undefined): number 
   const number = Number(value)
   // return undefined if value is NaN
   if (number !== number) {
-    throw new ServerError(`${value} is not a number`)
+    throw new ServerError(`${value as string} is not a number`)
   }
 
   return number
@@ -69,7 +69,7 @@ export function toEnum<T, E extends keyof T> (enumType: T, value: E | string | u
 
   const aEnum = enumType[value as E]
   if (aEnum == null) {
-    throw new ServerError(`${value} is not a enum value`)
+    throw new ServerError(`${value as string} is not a enum value`)
   }
 
   return aEnum
@@ -82,27 +82,27 @@ export function toOptionalEnum<T, E extends keyof T> (enumType: T, value: E | st
   return enumType[value as E]
 }
 
-export function toObject (value: object | unknown | undefined): object {
+export function toObject (value: Record<string, unknown> | unknown | undefined): Record<string, unknown> {
   if (value == null) {
     throw new ServerError('object value must be specified.')
   }
   if (typeof value != 'object') {
     throw new ServerError('value is not a object')
   }
-  return value as object
+  return value as Record<string, unknown>
 }
 
-export function toOptionalObject (value: object | unknown | undefined): object | undefined {
+export function toOptionalObject (value: Record<string, unknown> | unknown | undefined): Record<string, unknown> | undefined {
   if (value == null) {
     return
   }
   if (typeof value != 'object') {
     throw new ServerError('value is not a object')
   }
-  return value as object
+  return value as Record<string, unknown>
 }
 
-export function toBooleanArray (value: object | unknown | undefined): boolean[] {
+export function toBooleanArray (value: Record<string, unknown> | unknown | undefined): boolean[] {
   if (value == null) {
     throw new ServerError('array value must be specified.')
   }
@@ -114,7 +114,7 @@ export function toBooleanArray (value: object | unknown | undefined): boolean[] 
   })
 }
 
-export function toNumberArray (value: object | unknown | undefined): number[] {
+export function toNumberArray (value: Record<string, unknown> | unknown | undefined): number[] {
   if (value == null) {
     throw new ServerError('array value must be specified.')
   }
@@ -126,7 +126,7 @@ export function toNumberArray (value: object | unknown | undefined): number[] {
   })
 }
 
-export function toStringArray (value: object | unknown | undefined): string[] {
+export function toStringArray (value: Record<string, unknown> | unknown | undefined): string[] {
   if (value == null) {
     throw new ServerError('array value must be specified.')
   }

@@ -1,7 +1,7 @@
 import { ClientError, MockTransaction } from '../../../core'
 import { MemberFactory } from '../../../domain/factory/member.factory'
+import { MockMemberRepository } from '../../../domain/repository/member.repository'
 import { DeleteMemberInteractor } from './delete-member.usecase'
-import { MockMemberRepository } from '../../repository/member.repository'
 
 const testMember = MemberFactory.createMock()
 

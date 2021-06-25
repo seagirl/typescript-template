@@ -1,4 +1,4 @@
-import { MemberEntity } from '.'
+import { MemberEntity } from './member.entity'
 
 describe('Member', () => {
   it('new', () => {

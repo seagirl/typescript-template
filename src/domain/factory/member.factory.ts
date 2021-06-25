@@ -1,4 +1,4 @@
-import { MemberEntity } from '../entity'
+import { MemberEntity } from '../entity/member.entity'
 
 interface MemberFactoryInput {
   id: number;

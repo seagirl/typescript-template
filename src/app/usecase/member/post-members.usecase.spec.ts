@@ -1,6 +1,6 @@
 import { ClientError, MockTransaction } from '../../../core'
 import { MemberFactory } from '../../../domain/factory/member.factory'
-import { MockMemberRepository } from '../../repository/member.repository'
+import { MockMemberRepository } from '../../../domain/repository/member.repository'
 import { PostMembersInteractor } from './post-members.usecase'
 
 const testMember = MemberFactory.createMock()
