@@ -1,33 +1,27 @@
 import { ClientError, Usecase } from '../../../core'
-import { MemberEntity } from '../../../domain/entity'
-import { MemberRepository } from '../../repository/member.repository'
+import { MemberRepository } from '../../../domain/repository/member.repository'
+import { translate } from './translator'
 
-export interface GetMemberUseCaseInput {
+export interface Props {
+  memberRepository: MemberRepository;
+}
+
+export interface Request {
   code: string;
 }
 
-export type GetMemberUseCaseOutput = MemberEntity
+export type Response = Record<string, unknown>
 
-export interface GetMemberUseCaseDependency {
-  repository: MemberRepository;
-}
+export class GetMemberInteractor implements Usecase {
+  constructor (readonly props: Props) {}
 
-export interface GetMemberUsecase extends Usecase {
-  execute (input: GetMemberUseCaseInput): Promise<GetMemberUseCaseOutput>;
-}
-
-export class GetMemberInteractor implements GetMemberUsecase, GetMemberUseCaseDependency {
-  repository: MemberRepository
-
-  constructor (dependency: GetMemberUseCaseDependency) {
-    this.repository = dependency.repository
-  }
-
-  async execute (input: GetMemberUseCaseInput): Promise<GetMemberUseCaseOutput> {
-    const member = await this.repository.find(input.code)
+  async execute (input: Request): Promise<Response> {
+    const member = await this.props.memberRepository.find(input.code)
     if (!member) {
       throw new ClientError(`${input.code} is not found.`)
     }
-    return member
+    return {
+      member: translate(member)
+    }
   }
 }

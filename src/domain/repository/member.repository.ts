@@ -1,5 +1,5 @@
 import { IdentifierGenerator } from '../../core'
-import { MemberEntity } from '../../domain/entity'
+import { MemberEntity } from '../entity/member.entity'
 
 export interface SearchInput {
   limit?: number;
@@ -20,3 +20,5 @@ export class MockMemberRepository implements MemberRepository {
   save (): Promise<void> { return Promise.resolve() }
   delete (): Promise<void> { return Promise.resolve() }
 }
+
+export const mockMemberRepository = new MockMemberRepository()

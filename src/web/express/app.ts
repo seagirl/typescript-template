@@ -3,43 +3,65 @@ import { Server } from 'http'
 import { DateTime } from 'luxon'
 import { loadConfig } from '../../config'
 import { DB } from '../../db'
-import { ExpressSessions as SessionEntity } from '../../db/entity/express-sessions'
 import routes from './api'
 import { corsHandler } from './cors'
+import { OpenAPIValidator } from './openapi-validator'
 import { ExpressSentry } from './sentry'
 import { Session } from './session'
-import { APIValidator } from './validator'
 
 export default class Application {
   public readonly express: Express = express()
   private sentry!: ExpressSentry
   private db = new DB()
-  private validator = new APIValidator('./doc/api/index.json')
+  private apiSpecPath = './doc/api/index.json'
+  private validator = new OpenAPIValidator('./doc/api/index.json')
   private server!: Server
+
+  private get isTest (): boolean {
+    return process.env.NODE_ENV?.match(/^test/) ? true : false
+  }
 
   async init (): Promise<void> {
     const config = await loadConfig()
-    this.sentry = new ExpressSentry(config.sentryDSN)
+
+    if (!this.isTest) {
+      this.sentry = new ExpressSentry(config.sentryDSN)
+    }
 
     await this.db.init()
 
     const session = new Session({
-      secret: 'humanity-session-secret-tha-s2',
-      storeEntityClass: SessionEntity
+      secret: 'session-secret-s2',
+      storeTableName: 'express_sessions'
     })
 
-    this.express.use(this.sentry.requestHandler)
+    if (config.trustProxy != null) {
+      this.express.set('trust proxy', config.trustProxy)
+    }
+
+    if (!this.isTest) {
+      this.express.use(this.sentry.requestHandler)
+    }
+
     this.express.use(corsHandler)
+
+    this.express.use(express.json({ limit: '10mb' }))
+    this.express.use(express.urlencoded({ extended: true, limit:'10mb' }))
+
+    const validationHandler = await this.validator.middleware()
+    this.express.use(validationHandler)
+
     this.express.use(session.handler)
     this.express.use(session.authorizationHandler)
-    this.express.use(express.json())
-    this.express.use(express.urlencoded({ extended: true }))
     this.express.use(this.apiCacheControlHandler)
-    this.express.use('/api', routes)
-    this.express.use(this.sentry.errorHandler)
-    this.express.use(this.errorHandler)
 
-    await this.validator.install(this.express)
+    this.express.use('/api', routes)
+
+    if (!this.isTest) {
+      this.express.use(this.sentry.errorHandler)
+    }
+
+    this.express.use(this.errorHandler)
   }
 
   start (): void {
@@ -70,9 +92,8 @@ export default class Application {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-  private errorHandler = (err: any, req: Request, res: Response, next: NextFunction): void => {
-    const env = process.env.NODE_ENV ?? 'local'
-    if (env !== 'test') {
+  private errorHandler = (err: { stack: string; status: number; message: string }, req: Request, res: Response, next: NextFunction): void => {
+    if (!this.isTest) {
       console.error(`[ERROR] ${err.stack}`)
     }
 

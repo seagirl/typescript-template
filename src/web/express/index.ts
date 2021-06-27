@@ -7,4 +7,6 @@ const startServer = async (): Promise<void> => {
   app.start()
 }
 
-startServer()
+startServer().finally(() => {
+  console.log('Server started.')
+})

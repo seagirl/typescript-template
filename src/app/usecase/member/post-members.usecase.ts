@@ -1,59 +1,49 @@
-import { ClientError, IdentifierGenerator, ServerError, Transaction, Usecase } from '../../../core'
-import { MemberEntity } from '../../../domain/entity'
+import { ClientError, IdentifierGenerator, ServerError, Transaction } from '../../../core'
 import { MemberFactory } from '../../../domain/factory/member.factory'
-import { MemberRepository } from '../../repository/member.repository'
+import { MemberRepository } from '../../../domain/repository/member.repository'
+import { translate } from './translator'
 
-export interface PostMembersUseCaseInput {
+export interface Props {
+  transaction: Transaction;
+  memberRepository: MemberRepository;
+  memberIdentifierGenerator: IdentifierGenerator<number>;
+}
+
+export interface Request {
   code: string;
 }
 
-export type PostMembersUseCaseOutput = MemberEntity
+export type Response = Record<string, unknown>
 
-export interface PostMembersUseCaseDependency {
-  transaction: Transaction;
-  repository: MemberRepository;
-  identifierGenerator: IdentifierGenerator<number>;
-}
+export class PostMembersInteractor {
+  constructor (readonly props: Props) {}
 
-export interface PostMembersUsecase extends Usecase {
-  execute (input: PostMembersUseCaseInput): Promise<PostMembersUseCaseOutput>;
-}
-
-export class PostMembersInteractor implements PostMembersUsecase, PostMembersUseCaseDependency {
-  repository: MemberRepository
-  transaction: Transaction
-  identifierGenerator: IdentifierGenerator<number>
-
-  constructor (dependency: PostMembersUseCaseDependency) {
-    this.repository = dependency.repository
-    this.transaction = dependency.transaction
-    this.identifierGenerator = dependency.identifierGenerator
-  }
-
-  async execute (input: PostMembersUseCaseInput): Promise<PostMembersUseCaseOutput> {
-    let member = await this.repository.find(input.code)
+  async execute (input: Request): Promise<Response> {
+    let member = await this.props.memberRepository.find(input.code)
     if (member) {
       throw new ClientError(`${input.code} is found.`)
     }
 
-    await this.transaction.begin()
+    await this.props.transaction.begin()
 
     try {
-      const id = await this.identifierGenerator.nextIdentifier()
+      const id = await this.props.memberIdentifierGenerator.nextIdentifier()
       member = MemberFactory.create({ id: id, code: input.code })
 
-      await this.repository.save(member)
-      await this.transaction.commit()
+      await this.props.memberRepository.save(member)
+      await this.props.transaction.commit()
     } catch {
-      await this.transaction.rollback()
+      await this.props.transaction.rollback()
     } finally {
-      this.transaction.close()
+      await this.props.transaction.close()
     }
 
     if (!member) {
       throw new ServerError(`Something wrong to create ${input.code}.`)
     }
 
-    return member
+    return {
+      member: translate(member)
+    }
   }
 }

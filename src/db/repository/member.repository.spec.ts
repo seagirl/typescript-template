@@ -1,6 +1,6 @@
-import { MemberRepository } from '.'
 import { DB } from '../../db'
 import { MemberFactory } from '../../domain/factory/member.factory'
+import { MemberRepository } from './member.repository'
 
 const db = new DB()
 const testCode = 'test'

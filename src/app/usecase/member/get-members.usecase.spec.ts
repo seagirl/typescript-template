@@ -1,19 +1,28 @@
+import { calledTimes, mockReturnValues } from '../../../core/test/mock'
 import { MemberFactory } from '../../../domain/factory/member.factory'
+import { mockMemberRepository } from '../../../domain/repository/member.repository'
 import { GetMembersInteractor } from './get-members.usecase'
-import { MockMemberRepository } from '../../repository/member.repository'
+import { translate } from './translator'
 
 const testMember = MemberFactory.createMock()
 
-const repository = new MockMemberRepository()
-const interactor = new GetMembersInteractor({
-  repository: repository
-})
+const dependency = {
+  memberRepository: mockMemberRepository
+}
 
-let repositorySearchSpy: jest.SpyInstance
+const interactor = new GetMembersInteractor(dependency)
+
+interface Scenario {
+  memberRepositorySearchSpy: jest.SpyInstance;
+}
+
+let scenario: Scenario
 
 describe('GetMembersInteractor', () => {
   beforeEach(() => {
-    repositorySearchSpy = jest.spyOn(repository, 'search')
+    scenario = {
+      memberRepositorySearchSpy: jest.spyOn(mockMemberRepository, 'search')
+    }
   })
 
   afterEach(() => {
@@ -22,11 +31,16 @@ describe('GetMembersInteractor', () => {
   })
 
   it('execute', async () => {
-    repositorySearchSpy.mockReturnValue(Promise.resolve([testMember]))
+    mockReturnValues(scenario, {
+      memberRepositorySearchSpy: Promise.resolve([testMember])
+    })
 
     const result = await interactor.execute({})
-    expect(result).toEqual({ data: [testMember] })
+    expect(result).toEqual({ members: [translate(testMember)] })
 
-    expect(repositorySearchSpy).toHaveBeenCalledTimes(1)
+    expect(calledTimes(scenario))
+      .toEqual({
+        memberRepositorySearchSpy: 1,
+      })
   })
 })

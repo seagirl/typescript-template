@@ -1,0 +1,9 @@
+{
+  "name": "humanity",
+  "script": "dist/web/express/index.js",
+  "kill_timeout": 5000,
+  "env": {
+    "NODE_ENV": "staging",
+    "PORT": 3000
+  }
+}

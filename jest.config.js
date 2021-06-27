@@ -7,7 +7,7 @@ module.exports = {
   },
   globals: {
     "ts-jest": {
-      tsConfig: "tsconfig.json"
+      tsconfig: "tsconfig.json"
     }
   },
   testMatch: ["**/*.spec.+(ts|tsx)"],
@@ -17,5 +17,8 @@ module.exports = {
   coveragePathIgnorePatterns: [
     "<rootDir>/node_modules/",
     "<rootDir>/src/db/migration/"
+  ],
+  setupFilesAfterEnv: [
+    `./jest.setup.js`
   ]
 }

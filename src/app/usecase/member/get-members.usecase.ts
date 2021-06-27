@@ -1,35 +1,31 @@
 import { Usecase } from '../../../core'
-import { MemberEntity } from '../../../domain/entity'
-import { MemberRepository } from '../../repository/member.repository'
+import { MemberEntity } from '../../../domain/entity/member.entity'
+import { MemberRepository } from '../../../domain/repository/member.repository'
+import { translate } from './translator'
 
-export interface GetMembersUseCaseInput {
+export interface Props {
+  memberRepository: MemberRepository;
+}
+
+export interface Request {
   limit?: number;
   offset?: number;
 }
 
-export interface GetMembersUseCaseOutput {
-  data: MemberEntity[];
-}
+export type Response = Record<string, unknown>
 
-export interface GetMembersUseCaseDependency {
-  repository: MemberRepository;
-}
+export class GetMembersInteractor implements Usecase {
+  constructor (readonly props: Props) {}
 
-export interface GetMembersUsecase extends Usecase {
-  execute (input: GetMembersUseCaseInput): Promise<GetMembersUseCaseOutput>;
-}
+  async execute (input: Request): Promise<Response> {
+    const data = await this.props.memberRepository.search(input)
 
-export class GetMembersInteractor implements GetMembersUsecase, GetMembersUseCaseDependency {
-  repository: MemberRepository
+    const members = data.map((entity: MemberEntity) => {
+      return translate(entity)
+    })
 
-  constructor (dependency: GetMembersUseCaseDependency) {
-    this.repository = dependency.repository
-  }
-
-  async execute (input: GetMembersUseCaseInput): Promise<GetMembersUseCaseOutput> {
-    const data = await this.repository.search(input)
     return {
-      data: data
+      members: members
     }
   }
 }
