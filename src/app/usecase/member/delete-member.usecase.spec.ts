@@ -17,7 +17,6 @@ interface Scenario {
   transactionBeginSpy: jest.SpyInstance;
   transactioCommitSpy: jest.SpyInstance;
   transactioRollbackSpy: jest.SpyInstance;
-  transactionCloseSpy: jest.SpyInstance;
   memberRepositoryFindSpy: jest.SpyInstance;
   memberRepositoryDeleteSpy: jest.SpyInstance;
 }
@@ -30,7 +29,6 @@ describe('DeleteMemberInteractor', () => {
       transactionBeginSpy: jest.spyOn(mockTransaction, 'begin'),
       transactioCommitSpy: jest.spyOn(mockTransaction, 'commit'),
       transactioRollbackSpy: jest.spyOn(mockTransaction, 'rollback'),
-      transactionCloseSpy: jest.spyOn(mockTransaction, 'close'),
       memberRepositoryFindSpy: jest.spyOn(mockMemberRepository, 'find'),
       memberRepositoryDeleteSpy: jest.spyOn(mockMemberRepository, 'delete'),
     }
@@ -54,7 +52,6 @@ describe('DeleteMemberInteractor', () => {
         transactionBeginSpy: 1,
         transactioCommitSpy: 1,
         transactioRollbackSpy: 0,
-        transactionCloseSpy: 1,
         memberRepositoryFindSpy: 1,
         memberRepositoryDeleteSpy: 1,
       })
@@ -73,7 +70,6 @@ describe('DeleteMemberInteractor', () => {
         transactionBeginSpy: 0,
         transactioCommitSpy: 0,
         transactioRollbackSpy: 0,
-        transactionCloseSpy: 0,
         memberRepositoryFindSpy: 1,
         memberRepositoryDeleteSpy: 0,
       })
@@ -96,7 +92,6 @@ describe('DeleteMemberInteractor', () => {
         transactionBeginSpy: 1,
         transactioCommitSpy: 0,
         transactioRollbackSpy: 1,
-        transactionCloseSpy: 1,
         memberRepositoryFindSpy: 1,
         memberRepositoryDeleteSpy: 1,
       })

@@ -27,10 +27,9 @@ class PostMembersPresenter implements Presenter {
 }
 
 export class PostMembersHandler extends Handler {
-  constructor () {
+  constructor (private transaction = new Transaction()) {
     super()
 
-    const transaction = new Transaction()
     const memberRepository = new MemberRepository(transaction.manager)
 
     const usecase = new PostMembersInteractor({
@@ -41,5 +40,9 @@ export class PostMembersHandler extends Handler {
 
     this.controller = new PostMembersController(usecase)
     this.presenter = new PostMembersPresenter()
+  }
+
+  async finish (): Promise<void> {
+    await this.transaction.close()
   }
 }

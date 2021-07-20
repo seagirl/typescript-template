@@ -19,7 +19,6 @@ interface Scenario {
   transactionBeginSpy: jest.SpyInstance;
   transactioCommitSpy: jest.SpyInstance;
   transactioRollbackSpy: jest.SpyInstance;
-  transactionCloseSpy: jest.SpyInstance;
   memberRepositoryNextIdentifierSpy: jest.SpyInstance;
   memberRepositoryFindSpy: jest.SpyInstance;
   memberRepositorySaveSpy: jest.SpyInstance;
@@ -33,7 +32,6 @@ describe('PostMembersInteractor', () => {
       transactionBeginSpy: jest.spyOn(mockTransaction, 'begin'),
       transactioCommitSpy: jest.spyOn(mockTransaction, 'commit'),
       transactioRollbackSpy: jest.spyOn(mockTransaction, 'rollback'),
-      transactionCloseSpy: jest.spyOn(mockTransaction, 'close'),
       memberRepositoryNextIdentifierSpy: jest.spyOn(mockMemberRepository, 'nextIdentifier'),
       memberRepositoryFindSpy: jest.spyOn(mockMemberRepository, 'find'),
       memberRepositorySaveSpy: jest.spyOn(mockMemberRepository, 'save'),
@@ -59,7 +57,6 @@ describe('PostMembersInteractor', () => {
         transactionBeginSpy: 1,
         transactioCommitSpy: 1,
         transactioRollbackSpy: 0,
-        transactionCloseSpy: 1,
         memberRepositoryNextIdentifierSpy: 1,
         memberRepositoryFindSpy: 1,
         memberRepositorySaveSpy: 1,
@@ -80,7 +77,6 @@ describe('PostMembersInteractor', () => {
         transactionBeginSpy: 0,
         transactioCommitSpy: 0,
         transactioRollbackSpy: 0,
-        transactionCloseSpy: 0,
         memberRepositoryNextIdentifierSpy: 0,
         memberRepositoryFindSpy: 1,
         memberRepositorySaveSpy: 0,
@@ -105,7 +101,6 @@ describe('PostMembersInteractor', () => {
         transactionBeginSpy: 1,
         transactioCommitSpy: 0,
         transactioRollbackSpy: 1,
-        transactionCloseSpy: 1,
         memberRepositoryNextIdentifierSpy: 1,
         memberRepositoryFindSpy: 1,
         memberRepositorySaveSpy: 1,

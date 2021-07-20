@@ -27,10 +27,9 @@ class DeleteMemberPresenter implements Presenter {
 }
 
 export class DeleteMemberHandler extends Handler {
-  constructor () {
+  constructor (private transaction = new Transaction()) {
     super()
 
-    const transaction = new Transaction()
     const memberRepository = new MemberRepository(transaction.manager)
 
     const usecase = new DeleteMemberInteractor({
@@ -40,5 +39,9 @@ export class DeleteMemberHandler extends Handler {
 
     this.controller = new DeleteMemberController(usecase)
     this.presenter = new DeleteMemberPresenter()
+  }
+
+  async finish (): Promise<void> {
+    await this.transaction.close()
   }
 }

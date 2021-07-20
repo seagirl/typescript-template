@@ -26,10 +26,8 @@ export class DeleteMemberInteractor implements Usecase {
     try {
       await this.props.memberRepository.delete(member)
       await this.props.transaction.commit()
-      await this.props.transaction.close()
     } catch (error) {
       await this.props.transaction.rollback()
-      await this.props.transaction.close()
       throw error
     }
 

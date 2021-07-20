@@ -26,6 +26,10 @@ export class Transaction implements ITransaction {
   }
 
   async close (): Promise<void> {
+    if (this.queryRunner.isReleased) {
+      return
+    }
+
     await this.queryRunner.release()
   }
 }

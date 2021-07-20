@@ -20,7 +20,9 @@ export const handle = async (handler: Handler, req: Request, res: Response, next
       url: `${req.protocol}://${req.hostname}${req.originalUrl}`
     })
     res.json(handler.presenter.present(result))
+    await handler.finish()
   } catch (error) {
+    await handler.finish()
     next(error)
   }
 }
